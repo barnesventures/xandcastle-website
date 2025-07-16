@@ -6,9 +6,9 @@ This task file is designed for ClaudeNightsWatch to guide the development of the
 
 ## 🏗️ Sprint 1: Project Setup & API Integration
 
-- [ ] Initialize Next.js app with TypeScript via Claude CLI
-- [ ] Install Tailwind CSS and configure project styles
-- [ ] Set up GitHub repository and Vercel deployment
+- [x] Initialize Next.js app with TypeScript via Claude CLI
+- [x] Install Tailwind CSS and configure project styles
+- [x] Set up GitHub repository and Vercel deployment
 - [ ] Configure environment variables (.env.local)
 - [ ] Connect to Neon database (PostgreSQL via Vercel integration)
 - [ ] Integrate Printify API: product catalog sync
