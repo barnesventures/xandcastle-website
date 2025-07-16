@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { getProducts, getProductDetails, formatPrice } from '@/app/lib/printify-client';
 import type { ProductListItem, ProductDetails } from '@/app/lib/printify-client';
 
@@ -50,9 +51,11 @@ export function ProductExample() {
             onClick={() => handleProductClick(product.id)}
           >
             {product.images[0] && (
-              <img
+              <Image
                 src={product.images[0].src}
                 alt={product.title}
+                width={300}
+                height={192}
                 className="w-full h-48 object-cover mb-2 rounded"
               />
             )}

@@ -3,10 +3,10 @@ import { getProductDetails } from '@/app/lib/printify';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const productId = params.id;
+    const { id: productId } = await params;
     
     if (!productId) {
       return NextResponse.json(
@@ -73,7 +73,7 @@ export async function GET(
       { headers }
     );
   } catch (error) {
-    console.error(`Failed to fetch product ${params.id}:`, error);
+    console.error(`Failed to fetch product ${productId}:`, error);
     
     if (error instanceof Error && error.message.includes('not found')) {
       return NextResponse.json(

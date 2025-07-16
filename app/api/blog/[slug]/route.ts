@@ -4,12 +4,13 @@ import { prisma } from '@/app/lib/prisma'
 // GET /api/blog/[slug] - Get a single blog post by slug
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  { params }: { params: Promise<{ slug: string }> }
 ) {
+  const { slug } = await params;
   try {
     const post = await prisma.blogPost.findUnique({
       where: {
-        slug: params.slug,
+        slug: slug,
         published: true,
       },
     })
