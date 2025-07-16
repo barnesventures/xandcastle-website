@@ -1,0 +1,147 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model for customer accounts
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  name          String?
+  password      String?   // Hashed password for email/password auth
+  emailVerified DateTime?
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  accounts Account[]
+  sessions Session[]
+  orders   Order[]
+
+  @@map("users")
+}
+
+// NextAuth.js models
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+// Order model for storing order information
+model Order {
+  id                String      @id @default(cuid())
+  orderNumber       String      @unique
+  userId            String?     // Nullable for guest checkouts
+  email             String      // Email for both guest and registered users
+  status            OrderStatus @default(PENDING)
+  printifyOrderId   String?     // Reference to Printify order
+  stripePaymentId   String?     // Reference to Stripe payment
+  subtotal          Decimal     @db.Decimal(10, 2)
+  shipping          Decimal     @db.Decimal(10, 2)
+  tax               Decimal     @db.Decimal(10, 2)
+  total             Decimal     @db.Decimal(10, 2)
+  currency          String      @default("USD")
+  shippingAddress   Json        // JSON object with shipping details
+  billingAddress    Json?       // JSON object with billing details
+  items             Json        // JSON array of order items
+  trackingNumber    String?
+  trackingCarrier   String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id])
+
+  @@index([email])
+  @@index([userId])
+  @@index([printifyOrderId])
+  @@map("orders")
+}
+
+// BlogPost model for CMS content
+model BlogPost {
+  id          String      @id @default(cuid())
+  title       String
+  slug        String      @unique
+  content     String      @db.Text // Markdown or HTML content
+  excerpt     String?     // Short description for listings
+  coverImage  String?     // URL to cover image
+  published   Boolean     @default(false)
+  publishedAt DateTime?
+  authorName  String      @default("Xandcastle Team")
+  tags        String[]    // Array of tags
+  metaTitle   String?     // SEO meta title
+  metaDesc    String?     // SEO meta description
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@index([slug])
+  @@index([published, publishedAt])
+  @@map("blog_posts")
+}
+
+// Product model for caching Printify products
+model Product {
+  id               String   @id @default(cuid())
+  printifyId       String   @unique
+  title            String
+  description      String?  @db.Text
+  tags             String[] // Array of tags
+  options          Json     // JSON array of product options (size, color, etc.)
+  variants         Json     // JSON array of variants with prices
+  images           Json     // JSON array of image URLs
+  isVisible        Boolean  @default(true)
+  isWindsorProduct Boolean  @default(false) // Flag for Windsor tourist collection
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  lastSyncedAt     DateTime @default(now())
+
+  @@index([printifyId])
+  @@index([isVisible, isWindsorProduct])
+  @@map("products")
+}
+
+// Enum for order status
+enum OrderStatus {
+  PENDING
+  PROCESSING
+  PAID
+  FULFILLED
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}

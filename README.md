@@ -54,19 +54,76 @@ Xandcastle is a clothing brand designed by a 12-year-old, offering unique t-shir
 
 ## 🚀 Getting Started
 
+### 1. Install Dependencies
+
 ```bash
-# 1. Install dependencies
 npm install
+```
 
-# 2. Create .env.local
-NEXTAUTH_SECRET=...
-STRIPE_SECRET_KEY=...
-PRINTIFY_API_KEY=...
-DATABASE_URL=...
+### 2. Configure Environment Variables
 
-# 3. Run dev server
+Copy `.env.local.example` to `.env.local`:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Then update `.env.local` with your actual API keys and credentials:
+
+#### API Key Setup Guide
+
+**NextAuth.js Configuration:**
+- `NEXTAUTH_SECRET`: Generate a secure random string (32+ characters)
+  ```bash
+  # Generate using OpenSSL:
+  openssl rand -base64 32
+  ```
+- `NEXTAUTH_URL`: Set to `http://localhost:3000` for development
+
+**Stripe API Keys:**
+1. Sign up for a [Stripe account](https://dashboard.stripe.com/register)
+2. Navigate to [API Keys](https://dashboard.stripe.com/test/apikeys) in your dashboard
+3. Copy your test keys:
+   - `STRIPE_SECRET_KEY`: Your secret key (starts with `sk_test_`)
+   - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`: Your publishable key (starts with `pk_test_`)
+
+**Printify API Key:**
+1. Create a [Printify account](https://printify.com/app/register)
+2. Go to your [Printify account settings](https://printify.com/app/account/api)
+3. Generate a new API token
+4. Copy the token to `PRINTIFY_API_KEY`
+
+**Database URL:**
+1. Sign up for [Neon](https://neon.tech)
+2. Create a new project
+3. Copy the connection string from your dashboard
+4. Update `DATABASE_URL` with your connection string
+
+**Email Service (Choose One):**
+
+*Option A - SendGrid:*
+1. Sign up for [SendGrid](https://signup.sendgrid.com/)
+2. Go to Settings → [API Keys](https://app.sendgrid.com/settings/api_keys)
+3. Create a new API key with "Full Access"
+4. Copy to `SENDGRID_API_KEY`
+
+*Option B - Resend:*
+1. Sign up for [Resend](https://resend.com/signup)
+2. Go to [API Keys](https://resend.com/api-keys)
+3. Copy your API key to `RESEND_API_KEY`
+
+**Exchange Rate API:**
+1. Sign up for [ExchangeRate-API](https://app.exchangerate-api.com/sign-up) (free tier available)
+2. Or use [Fixer.io](https://fixer.io/signup/free) as an alternative
+3. Copy your API key to `EXCHANGE_RATE_API_KEY`
+
+### 3. Run Development Server
+
+```bash
 npm run dev
 ```
+
+The application will be available at `http://localhost:3000`
 
 ---
 
