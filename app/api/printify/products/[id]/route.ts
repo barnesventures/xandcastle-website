@@ -5,8 +5,9 @@ export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id: productId } = await params;
+  
   try {
-    const { id: productId } = await params;
     
     if (!productId) {
       return NextResponse.json(
