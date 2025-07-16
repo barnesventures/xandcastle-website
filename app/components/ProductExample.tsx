@@ -2,14 +2,16 @@
 
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { getProducts, getProductDetails, formatPrice } from '@/app/lib/printify-client';
+import { getProducts, getProductDetails } from '@/app/lib/printify-client';
 import type { ProductListItem, ProductDetails } from '@/app/lib/printify-client';
+import { useCurrency } from '@/app/contexts/CurrencyContext';
 
 export function ProductExample() {
   const [products, setProducts] = useState<ProductListItem[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { convertPrice, formatPrice } = useCurrency();
 
   useEffect(() => {
     loadProducts();
@@ -73,7 +75,7 @@ export function ProductExample() {
             
             <div className="mb-4">
               <p className="font-semibold">
-                Price: {formatPrice(selectedProduct.price_range.min)} - {formatPrice(selectedProduct.price_range.max)}
+                Price: {formatPrice(convertPrice(selectedProduct.price_range.min))} - {formatPrice(convertPrice(selectedProduct.price_range.max))}
               </p>
             </div>
 
@@ -84,17 +86,19 @@ export function ProductExample() {
                 .map((variant) => (
                   <div key={variant.id} className="border rounded p-2">
                     <p className="text-sm">{variant.title}</p>
-                    <p className="text-sm font-semibold">{formatPrice(variant.price)}</p>
+                    <p className="text-sm font-semibold">{formatPrice(convertPrice(variant.price))}</p>
                   </div>
                 ))}
             </div>
 
-            <button
-              onClick={() => setSelectedProduct(null)}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Close
-            </button>
+            <div className="flex gap-4">
+              <button
+                onClick={() => setSelectedProduct(null)}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+              >
+                Close
+              </button>
+            </div>
           </div>
         </div>
       )}
