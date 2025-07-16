@@ -59,7 +59,7 @@ export interface PrintifyProduct {
   published: boolean;
 }
 
-export interface PrintifyProductDetails extends PrintifyProduct {
+export interface PrintifyProductDetails extends Omit<PrintifyProduct, 'variants'> {
   variants: PrintifyVariantWithPrice[]; // Full variant details
   print_provider_id: number;
   blueprint_id: number;
