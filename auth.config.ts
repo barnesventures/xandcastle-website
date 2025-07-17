@@ -39,7 +39,8 @@ export default {
           id: user.id,
           email: user.email,
           name: user.name,
-          image: user.image
+          image: user.image,
+          isAdmin: user.isAdmin
         }
       }
     }),
@@ -61,13 +62,27 @@ export default {
     async session({ session, token }) {
       if (session?.user && token?.sub) {
         session.user.id = token.sub
+        session.user.isAdmin = token.isAdmin as boolean
       }
       return session
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger }) {
       if (user) {
         token.uid = user.id
+        token.isAdmin = user.isAdmin
       }
+      
+      // For OAuth providers, fetch isAdmin from database
+      if (trigger === "signIn" && token.sub && !token.isAdmin) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: token.sub },
+          select: { isAdmin: true }
+        });
+        if (dbUser) {
+          token.isAdmin = dbUser.isAdmin;
+        }
+      }
+      
       return token
     }
   },

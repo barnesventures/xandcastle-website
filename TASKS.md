@@ -30,12 +30,12 @@ This task file is designed for ClaudeNightsWatch to guide the development of the
 
 ## 💳 Sprint 3: Checkout & User Accounts
 
-- [ ] Integrate Stripe checkout for on-site payments
-- [ ] Add customer account system using NextAuth.js
-- [ ] Support guest checkout (email only)
-- [ ] Enable order tracking via Printify API
-- [ ] Send order confirmation email via SendGrid or Resend
-- [ ] Store user orders in Neon DB for lookup
+- [x] Integrate Stripe checkout for on-site payments
+- [x] Add customer account system using NextAuth.js
+- [x] Support guest checkout (email only)
+- [x] Enable order tracking via Printify API
+- [x] Send order confirmation email via SendGrid or Resend
+- [x] Store user orders in Neon DB for lookup
 
 ---
 

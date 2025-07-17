@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from '@/app/contexts/CartContext';
-import { ShoppingBagIcon, UserIcon } from '@heroicons/react/24/outline';
+import { ShoppingBagIcon, UserIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import CurrencySelector from './CurrencySelector';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
@@ -12,6 +12,7 @@ export default function Header() {
   const { itemCount, setIsOpen } = useCart();
   const { data: session, status } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
@@ -44,7 +45,9 @@ export default function Header() {
           </div>
 
           <div className="flex items-center space-x-4">
-            <CurrencySelector />
+            <div className="hidden sm:block">
+              <CurrencySelector />
+            </div>
             
             {/* Auth Section */}
             {status === 'loading' ? (
@@ -74,6 +77,17 @@ export default function Header() {
                     >
                       Order History
                     </Link>
+                    {session.user?.isAdmin && (
+                      <>
+                        <hr className="my-1" />
+                        <Link
+                          href="/admin"
+                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-medium"
+                        >
+                          Admin Dashboard
+                        </Link>
+                      </>
+                    )}
                     <hr className="my-1" />
                     <Link
                       href="/auth/signout"
@@ -106,8 +120,60 @@ export default function Header() {
                 </span>
               )}
             </button>
+            
+            {/* Mobile menu button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden p-2"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? (
+                <XMarkIcon className="h-6 w-6" />
+              ) : (
+                <Bars3Icon className="h-6 w-6" />
+              )}
+            </button>
           </div>
         </nav>
+        
+        {/* Mobile menu */}
+        {mobileMenuOpen && (
+          <div className="md:hidden border-t border-gray-200">
+            <div className="px-4 py-4 space-y-3">
+              <Link 
+                href="/shop" 
+                className="block py-2 hover:text-xandcastle-purple transition"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Shop
+              </Link>
+              <Link 
+                href="/windsor" 
+                className="block py-2 hover:text-xandcastle-purple transition"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Windsor Collection
+              </Link>
+              <Link 
+                href="/about" 
+                className="block py-2 hover:text-xandcastle-purple transition"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                About
+              </Link>
+              <Link 
+                href="/blog" 
+                className="block py-2 hover:text-xandcastle-purple transition"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Blog
+              </Link>
+              <div className="pt-4 border-t border-gray-200">
+                <CurrencySelector />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </header>
   );
