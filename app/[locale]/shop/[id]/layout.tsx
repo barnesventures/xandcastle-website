@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { getProductDetails } from '../../lib/printify-client';
+import { getProductDetails } from '@/app/lib/printify-client';
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 
 type Props = {
