@@ -195,6 +195,11 @@ export default function Footer() {
                     Returns & Exchanges
                   </LocalizedLink>
                 </li>
+                <li>
+                  <LocalizedLink href="/affiliates" className="text-gray-400 hover:text-white transition">
+                    Become an Affiliate
+                  </LocalizedLink>
+                </li>
               </ul>
             </div>
 

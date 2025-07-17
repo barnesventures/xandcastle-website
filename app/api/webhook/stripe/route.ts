@@ -5,6 +5,7 @@ import { prisma } from '@/app/lib/prisma';
 import { printifyClient } from '@/app/lib/printify-client';
 import { CreateOrderRequest, PrintifyLineItem } from '@/app/lib/types/printify';
 import { CartItem } from '@/app/contexts/CartContext';
+import { getAffiliateByCode, calculateCommission, recordAffiliateConversion } from '@/app/lib/affiliate';
 import Stripe from 'stripe';
 import { Prisma } from '@prisma/client';
 
@@ -102,6 +103,19 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
       return;
     }
 
+    // Check for affiliate code
+    const affiliateCode = session.metadata?.affiliateCode;
+    let affiliate = null;
+    let affiliateCommission = null;
+    
+    if (affiliateCode) {
+      affiliate = await getAffiliateByCode(affiliateCode);
+      if (affiliate) {
+        const orderTotal = (fullSession.amount_total || 0) / 100;
+        affiliateCommission = calculateCommission(orderTotal, Number(affiliate.commissionRate));
+      }
+    }
+
     // Create order in database
     const order = await prisma.order.create({
       data: {
@@ -120,6 +134,9 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         billingAddress: fullSession.customer_details?.address || null,
         items: cartItems as unknown as Prisma.InputJsonValue,
         userId: null, // We'll implement user association later
+        affiliateId: affiliate?.id || null,
+        affiliateCode: affiliateCode || null,
+        affiliateCommission: affiliateCommission,
       },
     });
 
@@ -149,6 +166,15 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         status: 'PROCESSING',
       },
     });
+
+    // Record affiliate conversion if applicable
+    if (affiliate && affiliateCommission) {
+      await recordAffiliateConversion(
+        affiliate.id,
+        (fullSession.amount_total || 0) / 100,
+        affiliateCommission
+      );
+    }
 
     console.log(`Order created successfully: ${order.orderNumber} (Printify: ${printifyOrder.id})`);
   } catch (error) {

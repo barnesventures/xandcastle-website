@@ -63,7 +63,7 @@ This task file is designed for ClaudeNightsWatch to guide the development of the
 
 ## 🧼 Post-Launch / Future
 
-- [ ] Add mailing list opt-in
-- [ ] Add multi-language support (i18n)
-- [ ] Add inventory visibility and restock notices
-- [ ] Explore affiliate/influencer integrations
+- [x] Add mailing list opt-in
+- [x] Add multi-language support (i18n)
+- [x] Add inventory visibility and restock notices
+- [x] Explore affiliate/influencer integrations

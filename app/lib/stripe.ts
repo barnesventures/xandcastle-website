@@ -15,6 +15,7 @@ export interface CheckoutSessionData {
   currency: string;
   successUrl: string;
   cancelUrl: string;
+  affiliateCode?: string;
 }
 
 // Create a Stripe product from a cart item
@@ -124,6 +125,7 @@ export async function createCheckoutSession(data: CheckoutSessionData): Promise<
       metadata: {
         cartItems: JSON.stringify(data.cartItems),
         currency: data.currency,
+        affiliateCode: data.affiliateCode || '',
       },
       allow_promotion_codes: true,
       billing_address_collection: 'required',

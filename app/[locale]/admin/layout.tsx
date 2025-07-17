@@ -12,7 +12,8 @@ import {
   ArrowLeftOnRectangleIcon,
   HomeIcon,
   EnvelopeIcon,
-  CubeIcon
+  CubeIcon,
+  UserGroupIcon
 } from '@heroicons/react/24/outline';
 
 interface AdminNavItem {
@@ -26,6 +27,7 @@ const navigation: AdminNavItem[] = [
   { name: 'Blog Posts', href: '/admin/blog', icon: DocumentTextIcon },
   { name: 'Orders', href: '/admin/orders', icon: ShoppingBagIcon },
   { name: 'Inventory', href: '/admin/inventory', icon: CubeIcon },
+  { name: 'Affiliates', href: '/admin/affiliates', icon: UserGroupIcon },
   { name: 'Newsletter', href: '/admin/newsletter', icon: EnvelopeIcon },
   { name: 'Products Sync', href: '/admin/products', icon: ArrowsRightLeftIcon },
 ];

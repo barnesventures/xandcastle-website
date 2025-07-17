@@ -9,6 +9,7 @@ import LoadingSpinner from '@/app/components/LoadingSpinner';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Image from 'next/image';
 import * as gtag from '@/app/utils/analytics';
+import { AFFILIATE_COOKIE_NAME } from '@/app/lib/affiliate';
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
@@ -34,6 +35,8 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
   const [isGuest, setIsGuest] = useState(true);
   const [newsletterOptIn, setNewsletterOptIn] = useState(false);
+  const [affiliateCode, setAffiliateCode] = useState<string>('');
+  const [showAffiliateField, setShowAffiliateField] = useState(false);
 
   // Redirect to cart if empty
   useEffect(() => {
@@ -54,6 +57,16 @@ export default function CheckoutPage() {
           quantity: item.quantity
         }))
       });
+      
+      // Check for affiliate code in cookie
+      const cookies = document.cookie.split(';');
+      const affiliateCookie = cookies.find(cookie => cookie.trim().startsWith(`${AFFILIATE_COOKIE_NAME}=`));
+      if (affiliateCookie) {
+        const code = affiliateCookie.split('=')[1];
+        if (code) {
+          setAffiliateCode(code);
+        }
+      }
     }
   }, [items, router]);
 
@@ -105,6 +118,7 @@ export default function CheckoutPage() {
           cartItems: items,
           currency: currentCurrency,
           customerEmail: customerInfo.email,
+          affiliateCode: affiliateCode || undefined,
         }),
       });
 
@@ -255,6 +269,67 @@ export default function CheckoutPage() {
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
+              </div>
+
+              {/* Affiliate Code */}
+              <div className="mt-6">
+                {affiliateCode && !showAffiliateField ? (
+                  <div className="p-4 bg-green-50 rounded-lg flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-green-800">
+                        Referral code applied: <code className="bg-green-100 px-2 py-1 rounded">{affiliateCode}</code>
+                      </p>
+                      <p className="text-xs text-green-600 mt-1">
+                        You're supporting an affiliate partner!
+                      </p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setAffiliateCode('');
+                        setShowAffiliateField(true);
+                      }}
+                      className="text-sm text-green-600 hover:text-green-800"
+                    >
+                      Change
+                    </button>
+                  </div>
+                ) : (
+                  <>
+                    {!showAffiliateField ? (
+                      <button
+                        type="button"
+                        onClick={() => setShowAffiliateField(true)}
+                        className="text-sm text-purple-600 hover:text-purple-800 underline"
+                      >
+                        Have a referral code?
+                      </button>
+                    ) : (
+                      <div className="space-y-2">
+                        <label htmlFor="affiliateCode" className="block text-sm font-medium text-gray-700">
+                          Referral Code (Optional)
+                        </label>
+                        <div className="flex gap-2">
+                          <input
+                            type="text"
+                            id="affiliateCode"
+                            value={affiliateCode}
+                            onChange={(e) => setAffiliateCode(e.target.value.toUpperCase())}
+                            placeholder="Enter code"
+                            className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowAffiliateField(false)}
+                            className="px-3 py-2 text-sm text-gray-600 hover:text-gray-800"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )}
               </div>
 
               {/* Newsletter Opt-in */}

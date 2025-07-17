@@ -105,6 +105,7 @@ export async function POST(request: NextRequest) {
       shippingAddress: body.shippingAddress,
       successUrl: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancelUrl: `${baseUrl}/cart`,
+      affiliateCode: body.affiliateCode,
     };
 
     // Create the checkout session

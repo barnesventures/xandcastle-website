@@ -207,6 +207,155 @@ model RestockNotification {
   @@map("restock_notifications")
 }
 
+// Affiliate model for tracking influencer/affiliate partners
+model Affiliate {
+  id                String    @id @default(cuid())
+  code              String    @unique // Unique referral code (e.g., JOHN20)
+  name              String    // Full name
+  email             String    @unique
+  phone             String?
+  website           String?   // Their website/social media
+  socialMedia       Json?     // JSON object with platform handles
+  status            AffiliateStatus @default(PENDING)
+  commissionRate    Decimal   @default(10) @db.Decimal(5, 2) // Percentage (e.g., 10.00%)
+  paymentMethod     String?   // How they want to be paid
+  paymentDetails    Json?     // Payment info (encrypted/secure)
+  notes             String?   @db.Text // Internal notes
+  
+  // Tracking stats
+  clicks            Int       @default(0)
+  conversions       Int       @default(0) // Number of orders
+  totalSales        Decimal   @default(0) @db.Decimal(10, 2) // Total sales generated
+  totalCommission   Decimal   @default(0) @db.Decimal(10, 2) // Total commission earned
+  totalPaid         Decimal   @default(0) @db.Decimal(10, 2) // Total commission paid out
+  
+  // Dates
+  approvedAt        DateTime? // When application was approved
+  lastClickAt       DateTime? // Last time someone used their code
+  lastConversionAt  DateTime? // Last successful order
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  
+  // Relations
+  affiliateClicks   AffiliateClick[]
+  orders            Order[]   @relation("AffiliateOrders")
+  payouts           AffiliatePayout[]
+  
+  @@index([code])
+  @@index([email])
+  @@index([status])
+  @@map("affiliates")
+}
+
+// Track individual clicks/visits from affiliate links
+model AffiliateClick {
+  id            String    @id @default(cuid())
+  affiliateId   String
+  ipAddress     String?   // For analytics (hashed for privacy)
+  userAgent     String?   // Browser info
+  referrerUrl   String?   // Where they came from
+  landingPage   String?   // Which page they landed on
+  country       String?   // Detected country
+  createdAt     DateTime  @default(now())
+  
+  // Relations
+  affiliate     Affiliate @relation(fields: [affiliateId], references: [id], onDelete: Cascade)
+  
+  @@index([affiliateId])
+  @@index([createdAt])
+  @@map("affiliate_clicks")
+}
+
+// Track commission payouts to affiliates
+model AffiliatePayout {
+  id            String    @id @default(cuid())
+  affiliateId   String
+  amount        Decimal   @db.Decimal(10, 2)
+  currency      String    @default("USD")
+  status        PayoutStatus @default(PENDING)
+  method        String    // Payment method used
+  reference     String?   // Transaction reference
+  notes         String?   @db.Text
+  paidAt        DateTime? // When payment was sent
+  periodStart   DateTime  // Commission period start
+  periodEnd     DateTime  // Commission period end
+  orderCount    Int       // Number of orders in this payout
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  // Relations
+  affiliate     Affiliate @relation(fields: [affiliateId], references: [id])
+  
+  @@index([affiliateId])
+  @@index([status])
+  @@index([periodStart, periodEnd])
+  @@map("affiliate_payouts")
+}
+
+// Update Order model to include affiliate tracking
+model Order {
+  id                String      @id @default(cuid())
+  orderNumber       String      @unique
+  userId            String?     // Nullable for guest checkouts
+  email             String      // Email for both guest and registered users
+  status            OrderStatus @default(PENDING)
+  printifyOrderId   String?     // Reference to Printify order
+  stripePaymentId   String?     // Reference to Stripe payment
+  subtotal          Decimal     @db.Decimal(10, 2)
+  shipping          Decimal     @db.Decimal(10, 2)
+  tax               Decimal     @db.Decimal(10, 2)
+  total             Decimal     @db.Decimal(10, 2)
+  currency          String      @default("USD")
+  shippingAddress   Json        // JSON object with shipping details
+  billingAddress    Json?       // JSON object with billing details
+  items             Json        // JSON array of order items with product details
+  trackingNumber    String?
+  trackingCarrier   String?
+  trackingUrl       String?     // Direct tracking URL
+  customerName      String      // Full name for display
+  customerPhone     String?     // Phone number
+  fulfillmentStatus String      @default("pending") // Printify fulfillment status
+  shipments         Json?       // JSON array of shipment details from Printify
+  emailSent         Boolean     @default(false) // Track if confirmation email was sent
+  
+  // Affiliate tracking
+  affiliateId       String?     // ID of referring affiliate
+  affiliateCode     String?     // Code used (for historical reference)
+  affiliateCommission Decimal?  @db.Decimal(10, 2) // Commission amount for this order
+  
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+
+  // Relations
+  user User? @relation(fields: [userId], references: [id])
+  affiliate Affiliate? @relation("AffiliateOrders", fields: [affiliateId], references: [id])
+
+  @@index([email])
+  @@index([userId])
+  @@index([printifyOrderId])
+  @@index([orderNumber, email]) // For guest order lookup
+  @@index([affiliateId])
+  @@map("orders")
+}
+
+// Enum for affiliate status
+enum AffiliateStatus {
+  PENDING    // Application submitted
+  APPROVED   // Active affiliate
+  REJECTED   // Application rejected
+  SUSPENDED  // Temporarily disabled
+  INACTIVE   // No longer active
+}
+
+// Enum for payout status
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
 // Enum for order status
 enum OrderStatus {
   PENDING

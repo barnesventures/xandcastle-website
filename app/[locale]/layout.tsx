@@ -15,6 +15,7 @@ import { SessionProvider } from "@/app/components/SessionProvider";
 import { GoogleAnalytics } from "@/app/components/GoogleAnalytics";
 import { CookieConsentBanner } from "@/app/components/CookieConsentBanner";
 import DevelopmentIndicator from "@/app/components/DevelopmentIndicator";
+import AffiliateTracker from "@/app/components/AffiliateTracker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -133,6 +134,7 @@ export default async function LocaleLayout({
               <CurrencyProvider>
                 <CartProvider>
                   <GoogleAnalytics />
+                  <AffiliateTracker />
                   <div className="flex flex-col min-h-screen">
                     <Header />
                     <main className="flex-grow">
