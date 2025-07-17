@@ -29,7 +29,7 @@ function formatOrderStatus(status: string) {
 export default async function OrderDetailPage({
   params
 }: {
-  params: { orderNumber: string }
+  params: Promise<{ orderNumber: string }>
 }) {
   const session = await auth()
   
@@ -37,9 +37,11 @@ export default async function OrderDetailPage({
     redirect('/auth/signin')
   }
 
+  const { orderNumber } = await params
+
   const order = await prisma.order.findFirst({
     where: {
-      orderNumber: params.orderNumber,
+      orderNumber: orderNumber,
       email: session.user.email
     }
   })

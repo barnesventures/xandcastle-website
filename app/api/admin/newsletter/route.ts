@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
-import prisma from '@/app/lib/prisma';
+import { auth } from '@/auth';
+import { prisma } from '@/app/lib/prisma';
 import { NewsletterStatus } from '@prisma/client';
 
 // Check if user is admin
 async function isAdmin(request: NextRequest) {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   
   if (!session || !session.user?.email) {
     return false;

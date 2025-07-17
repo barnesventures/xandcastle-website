@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
+import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { isAdmin } from '@/app/lib/admin-auth';
 import AffiliatesClient from './AffiliatesClient';
@@ -11,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default async function AffiliatesPage() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   
   if (!session?.user?.email) {
     redirect('/auth/signin');

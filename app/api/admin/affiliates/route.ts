@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { isAdmin } from '@/app/lib/admin-auth';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
+import { auth } from '@/auth';
 
 export async function GET(request: NextRequest) {
   try {
     // Check admin authentication
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session?.user?.email || !await isAdmin(session.user.email)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -88,7 +87,7 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     // Check admin authentication
-    const session = await getServerSession(authOptions);
+    const session = await auth();
     if (!session?.user?.email || !await isAdmin(session.user.email)) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

@@ -1,5 +1,4 @@
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/auth';
+import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/app/lib/prisma';
 import { inventorySyncService } from '@/app/lib/inventory-sync';
@@ -13,7 +12,7 @@ export const metadata = {
 };
 
 export default async function InventoryDashboard() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
   
   if (!session?.user?.email) {
     redirect('/auth/signin');

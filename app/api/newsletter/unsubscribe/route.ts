@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import prisma from '@/app/lib/prisma';
+import { prisma } from '@/app/lib/prisma';
 
 // Validation schema for POST request
 const unsubscribeSchema = z.object({
