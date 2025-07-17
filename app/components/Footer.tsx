@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
+import * as gtag from '@/app/utils/analytics';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
@@ -11,6 +12,9 @@ export default function Footer() {
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubscribeStatus('loading');
+    
+    // Track newsletter signup
+    gtag.signUp('newsletter');
     
     // Placeholder for newsletter signup
     setTimeout(() => {

@@ -5,6 +5,29 @@ import Link from 'next/link';
 export const metadata: Metadata = {
   title: 'About Xandcastle - Cool Clothing for Creative Kids',
   description: 'Discover the story behind Xandcastle - where imagination meets fashion. Creating unique, fun clothing designs for kids and teens who dare to be different.',
+  keywords: ['about Xandcastle', 'kids clothing brand', 'teens fashion story', 'creative apparel', 'Windsor collection', 'UK clothing brand'],
+  openGraph: {
+    title: 'About Xandcastle - Cool Clothing for Creative Kids',
+    description: 'Discover the story behind Xandcastle - where imagination meets fashion. Creating unique designs for kids and teens.',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'About Xandcastle',
+      }
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About Xandcastle',
+    description: 'Discover the story behind Xandcastle - where imagination meets fashion.',
+    images: ['/logo.png'],
+  },
+  alternates: {
+    canonical: 'https://xandcastle.com/about',
+  },
 };
 
 export default function AboutPage() {
@@ -188,13 +211,13 @@ export default function AboutPage() {
                     Follow us on social media for the latest designs, special offers, and castle adventures!
                   </p>
                   <div className="flex justify-center space-x-6 mt-6">
-                    <a href="#" className="text-3xl hover:text-xandcastle-purple transition">
+                    <a href="#" className="text-3xl hover:text-xandcastle-purple transition" aria-label="Follow us on Instagram">
                       📷
                     </a>
-                    <a href="#" className="text-3xl hover:text-xandcastle-pink transition">
+                    <a href="#" className="text-3xl hover:text-xandcastle-pink transition" aria-label="Follow us on Twitter">
                       🐦
                     </a>
-                    <a href="#" className="text-3xl hover:text-xandcastle-blue transition">
+                    <a href="#" className="text-3xl hover:text-xandcastle-blue transition" aria-label="Follow us on Facebook">
                       📘
                     </a>
                   </div>

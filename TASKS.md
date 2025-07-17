@@ -41,11 +41,11 @@ This task file is designed for ClaudeNightsWatch to guide the development of the
 
 ## 📝 Sprint 4: CMS & Admin Dashboard
 
-- [ ] Build admin dashboard for blog/news management
-- [ ] Use markdown or WYSIWYG (e.g., tiptap) editor
-- [ ] Enable blog post creation and editing
-- [ ] Add generic brand story and About page
-- [ ] Restrict admin access to authorized users only
+- [x] Build admin dashboard for blog/news management
+- [x] Use markdown or WYSIWYG (e.g., tiptap) editor
+- [x] Enable blog post creation and editing
+- [x] Add generic brand story and About page
+- [x] Restrict admin access to authorized users only
 
 ---
 

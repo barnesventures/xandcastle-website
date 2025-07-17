@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useCart } from '@/app/contexts/CartContext';
 import { useCurrency } from '@/app/contexts/CurrencyContext';
+import { SupportedCurrency } from '@/app/lib/types/currency';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 import Link from 'next/link';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
@@ -117,7 +118,7 @@ export default function CheckoutSuccessPage() {
               <div className="flex justify-between">
                 <span className="text-gray-600">Total Amount:</span>
                 <span className="font-medium text-gray-900">
-                  {formatPrice(sessionData.amount_total / 100, sessionData.currency.toUpperCase())}
+                  {formatPrice(sessionData.amount_total / 100, sessionData.currency.toUpperCase() as SupportedCurrency)}
                 </span>
               </div>
             </div>

@@ -2,7 +2,16 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Contact Us - Xandcastle',
-  description: 'Get in touch with Xandcastle. We love hearing from our castle crew!',
+  description: 'Get in touch with Xandcastle. We love hearing from our castle crew! Questions about orders, Windsor collection, or just want to say hi? Contact us today.',
+  keywords: ['contact Xandcastle', 'customer service', 'kids clothing support', 'Windsor collection enquiries', 'email Xandcastle'],
+  openGraph: {
+    title: 'Contact Us - Xandcastle',
+    description: 'Get in touch with Xandcastle. Questions about orders or just want to say hi? We love hearing from our castle crew!',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://xandcastle.com/contact',
+  },
 };
 
 export default function ContactPage() {

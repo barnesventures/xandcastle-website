@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createOrder, submitOrderForFulfillment } from '@/app/lib/printify';
 import { CreateOrderRequest } from '@/app/lib/types/printify';
+import { OrderStatus, Prisma } from '@prisma/client';
 
 export async function POST(request: NextRequest) {
   try {
@@ -144,7 +145,7 @@ export async function GET(request: NextRequest) {
         data: {
           status: mapPrintifyStatusToOrderStatus(orderStatus.status),
           fulfillmentStatus: orderStatus.fulfillment_status,
-          shipments: orderStatus.shipments || undefined,
+          shipments: orderStatus.shipments as unknown as Prisma.InputJsonValue || undefined,
           trackingNumber: orderStatus.shipments?.[0]?.number || undefined,
           trackingCarrier: orderStatus.shipments?.[0]?.carrier || undefined,
           trackingUrl: orderStatus.shipments?.[0]?.url || undefined,
@@ -173,15 +174,15 @@ export async function GET(request: NextRequest) {
 /**
  * Map Printify status to our OrderStatus enum
  */
-function mapPrintifyStatusToOrderStatus(printifyStatus: string): string {
-  const statusMap: Record<string, string> = {
-    'pending': 'PENDING',
-    'processing': 'PROCESSING',
-    'fulfilled': 'FULFILLED',
-    'cancelled': 'CANCELLED',
-    'on-hold': 'PROCESSING',
-    'partially-fulfilled': 'PROCESSING',
+function mapPrintifyStatusToOrderStatus(printifyStatus: string): OrderStatus {
+  const statusMap: Record<string, OrderStatus> = {
+    'pending': OrderStatus.PENDING,
+    'processing': OrderStatus.PROCESSING,
+    'fulfilled': OrderStatus.FULFILLED,
+    'cancelled': OrderStatus.CANCELLED,
+    'on-hold': OrderStatus.PROCESSING,
+    'partially-fulfilled': OrderStatus.PROCESSING,
   };
 
-  return statusMap[printifyStatus.toLowerCase()] || 'PENDING';
+  return statusMap[printifyStatus.toLowerCase()] || OrderStatus.PENDING;
 }

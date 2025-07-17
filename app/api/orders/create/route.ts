@@ -85,7 +85,7 @@ export async function POST(request: NextRequest) {
         customerName: `${body.shippingAddress.first_name} ${body.shippingAddress.last_name}`,
         customerPhone: body.shippingAddress.phone || null,
         shippingAddress: body.shippingAddress as Prisma.InputJsonObject,
-        billingAddress: body.billingAddress ? body.billingAddress as Prisma.InputJsonObject : null,
+        billingAddress: body.billingAddress ? body.billingAddress as Prisma.InputJsonObject : Prisma.JsonNull,
         items: body.lineItems.map(item => ({
           product_id: item.product_id,
           variant_id: item.variant_id,

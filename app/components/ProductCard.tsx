@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { formatPrice } from "../lib/printify-client";
+import { ProductImage } from "./OptimizedImage";
 
 interface ProductCardProps {
   id: string;
@@ -31,11 +31,10 @@ export default function ProductCard({
     <Link href={`/products/${id}`} className="group">
       <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <div className="aspect-square relative overflow-hidden bg-gray-100">
-          <Image
+          <ProductImage
             src={image}
-            alt={title}
+            alt={`${title} - ${tags?.includes('windsor') ? 'Windsor tourist collection' : 'Kids and teens clothing'}`}
             fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="object-cover group-hover:scale-105 transition-transform duration-300"
           />
         </div>

@@ -2,7 +2,16 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Shipping Information - Xandcastle',
-  description: 'Learn about Xandcastle shipping options, delivery times, and international shipping.',
+  description: 'Learn about Xandcastle shipping options, delivery times, and international shipping for kids clothing and Windsor souvenirs. Fast UK delivery and worldwide shipping available.',
+  keywords: ['shipping information', 'delivery times', 'international shipping', 'UK delivery', 'Windsor souvenirs shipping'],
+  openGraph: {
+    title: 'Shipping Information - Xandcastle',
+    description: 'Fast UK delivery and worldwide shipping for kids clothing and Windsor souvenirs.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://xandcastle.com/shipping',
+  },
 };
 
 export default function ShippingPage() {

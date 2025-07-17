@@ -2,7 +2,20 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy - Xandcastle',
-  description: 'Xandcastle privacy policy - Learn how we protect your data and respect your privacy.',
+  description: 'Xandcastle privacy policy - Learn how we protect your data and respect your privacy when shopping for kids clothing and Windsor souvenirs. GDPR compliant.',
+  keywords: ['privacy policy', 'data protection', 'GDPR', 'personal information', 'kids clothing privacy'],
+  openGraph: {
+    title: 'Privacy Policy - Xandcastle',
+    description: 'Learn how we protect your data and respect your privacy. GDPR compliant.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://xandcastle.com/privacy',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function PrivacyPage() {

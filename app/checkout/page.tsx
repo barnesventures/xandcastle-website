@@ -8,6 +8,7 @@ import { useCurrency } from '@/app/contexts/CurrencyContext';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Image from 'next/image';
+import * as gtag from '@/app/utils/analytics';
 
 // Initialize Stripe
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY!);
@@ -22,7 +23,7 @@ interface CustomerInfo {
 export default function CheckoutPage() {
   const router = useRouter();
   const { items, subtotal, clearCart } = useCart();
-  const { currency, convertPrice, formatPrice } = useCurrency();
+  const { currentCurrency, convertPrice, formatPrice } = useCurrency();
   const [customerInfo, setCustomerInfo] = useState<CustomerInfo>({
     email: '',
     firstName: '',
@@ -37,6 +38,21 @@ export default function CheckoutPage() {
   useEffect(() => {
     if (items.length === 0) {
       router.push('/cart');
+    } else {
+      // Track begin checkout event
+      const cartValue = subtotal / 100; // Convert cents to currency units
+      gtag.beginCheckout({
+        currency: currentCurrency,
+        value: cartValue,
+        items: items.map(item => ({
+          item_id: item.productId,
+          item_name: item.title,
+          item_category: 'Apparel',
+          item_variant: item.variantTitle,
+          price: item.price / 100,
+          quantity: item.quantity
+        }))
+      });
     }
   }, [items, router]);
 
@@ -67,7 +83,7 @@ export default function CheckoutPage() {
         },
         body: JSON.stringify({
           cartItems: items,
-          currency: currency.code,
+          currency: currentCurrency,
           customerEmail: customerInfo.email,
         }),
       });

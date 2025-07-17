@@ -6,6 +6,7 @@ import { printifyClient } from '@/app/lib/printify-client';
 import { CreateOrderRequest, PrintifyLineItem } from '@/app/lib/types/printify';
 import { CartItem } from '@/app/contexts/CartContext';
 import Stripe from 'stripe';
+import { Prisma } from '@prisma/client';
 
 // Disable body parsing, we need the raw body for webhook verification
 export const runtime = 'nodejs';
@@ -13,7 +14,8 @@ export const runtime = 'nodejs';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.text();
-    const signature = headers().get('stripe-signature');
+    const headersList = await headers();
+    const signature = headersList.get('stripe-signature');
 
     if (!signature) {
       return NextResponse.json(
@@ -112,9 +114,11 @@ async function handleSuccessfulPayment(session: Stripe.Checkout.Session) {
         tax: (fullSession.total_details?.amount_tax || 0) / 100,
         total: (fullSession.amount_total || 0) / 100,
         currency: fullSession.currency?.toUpperCase() || 'USD',
+        customerName: fullSession.customer_details?.name || shippingAddress.first_name + ' ' + shippingAddress.last_name,
+        customerPhone: fullSession.customer_details?.phone || shippingAddress.phone || null,
         shippingAddress: shippingAddress as any,
         billingAddress: fullSession.customer_details?.address || null,
-        items: cartItems,
+        items: cartItems as unknown as Prisma.InputJsonValue,
         userId: null, // We'll implement user association later
       },
     });

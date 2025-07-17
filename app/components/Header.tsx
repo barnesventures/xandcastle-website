@@ -21,10 +21,11 @@ export default function Header() {
           <Link href="/" className="flex items-center">
             <Image
               src="/logo.png"
-              alt="Xandcastle Logo"
+              alt="Xandcastle - Cool t-shirts for kids and teens"
               width={40}
               height={40}
               className="mr-2"
+              priority
             />
             <span className="font-bold text-xl">Xandcastle</span>
           </Link>

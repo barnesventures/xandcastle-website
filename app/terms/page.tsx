@@ -2,7 +2,20 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Terms of Service - Xandcastle',
-  description: 'Xandcastle terms of service - Our agreement with you.',
+  description: 'Xandcastle terms of service for purchasing kids clothing and Windsor souvenirs. Read our terms and conditions before shopping.',
+  keywords: ['terms of service', 'terms and conditions', 'legal terms', 'shopping terms', 'kids clothing terms'],
+  openGraph: {
+    title: 'Terms of Service - Xandcastle',
+    description: 'Terms and conditions for shopping at Xandcastle.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://xandcastle.com/terms',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function TermsPage() {

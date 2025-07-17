@@ -6,7 +6,8 @@ import {
   UserGroupIcon,
   CurrencyDollarIcon,
   ArrowTrendingUpIcon,
-  ClockIcon
+  ClockIcon,
+  ArrowsRightLeftIcon
 } from '@heroicons/react/24/outline';
 
 async function getDashboardStats() {

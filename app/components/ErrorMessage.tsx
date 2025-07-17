@@ -34,3 +34,6 @@ export default function ErrorMessage({ message, onRetry }: ErrorMessageProps) {
     </div>
   );
 }
+
+// Named export for backwards compatibility
+export { ErrorMessage };

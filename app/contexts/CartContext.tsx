@@ -2,6 +2,8 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { ProductDetails } from '@/app/lib/printify-client';
+import * as gtag from '@/app/utils/analytics';
+import { useCurrency } from './CurrencyContext';
 
 export interface CartItem {
   id: string; // Combination of productId and variantId
@@ -35,6 +37,7 @@ const CART_STORAGE_KEY = 'xandcastle_cart';
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
+  const { currentCurrency } = useCurrency();
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -83,6 +86,20 @@ export function CartProvider({ children }: { children: ReactNode }) {
       };
 
       setItems([...items, newItem]);
+      
+      // Track add to cart event
+      gtag.addToCart({
+        currency: currentCurrency,
+        value: variant.price / 100, // Convert cents to currency units
+        items: [{
+          item_id: product.id,
+          item_name: product.title,
+          item_category: 'Apparel',
+          item_variant: variant.title,
+          price: variant.price / 100,
+          quantity: quantity
+        }]
+      });
     }
 
     // Open cart drawer when item is added
@@ -90,6 +107,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const removeItem = (itemId: string) => {
+    const itemToRemove = items.find(item => item.id === itemId);
+    if (itemToRemove) {
+      // Track remove from cart event
+      gtag.removeFromCart({
+        currency: currentCurrency,
+        value: itemToRemove.price / 100 * itemToRemove.quantity,
+        items: [{
+          item_id: itemToRemove.productId,
+          item_name: itemToRemove.title,
+          item_category: 'Apparel',
+          item_variant: itemToRemove.variantTitle,
+          price: itemToRemove.price / 100,
+          quantity: itemToRemove.quantity
+        }]
+      });
+    }
     setItems(items.filter(item => item.id !== itemId));
   };
 

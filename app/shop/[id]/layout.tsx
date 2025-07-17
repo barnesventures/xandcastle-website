@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { getProductDetails } from '../../lib/printify-client';
+import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 
 type Props = {
   params: { id: string };
@@ -46,5 +47,22 @@ export default function ProductLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <ErrorBoundary
+      fallback={
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">
+              Unable to load product
+            </h2>
+            <p className="text-gray-600">
+              Please try refreshing the page or browse our other products.
+            </p>
+          </div>
+        </div>
+      }
+    >
+      {children}
+    </ErrorBoundary>
+  );
 }

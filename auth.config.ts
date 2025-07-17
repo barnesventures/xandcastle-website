@@ -85,8 +85,5 @@ export default {
       
       return token
     }
-  },
-  session: {
-    strategy: "jwt"
   }
 } satisfies NextAuthConfig

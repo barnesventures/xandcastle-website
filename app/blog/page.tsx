@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { CalendarIcon, TagIcon } from '@heroicons/react/24/outline'
+import { Metadata } from 'next'
 
 async function getBlogPosts(page: number = 1, limit: number = 9) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -18,9 +19,32 @@ async function getBlogPosts(page: number = 1, limit: number = 9) {
   return response.json()
 }
 
-export const metadata = {
-  title: 'Blog - Xandcastle',
-  description: 'Latest news and updates from Xandcastle',
+export const metadata: Metadata = {
+  title: 'Blog - Latest News & Updates | Xandcastle',
+  description: 'Read the latest news, updates, and stories from Xandcastle. Discover fashion tips, design inspiration, and behind-the-scenes content from our kids and teens clothing brand.',
+  keywords: ['Xandcastle blog', 'kids fashion blog', 'teens clothing news', 'design stories', 'Windsor fashion', 'clothing brand updates'],
+  openGraph: {
+    title: 'Blog - Latest News & Updates | Xandcastle',
+    description: 'Read the latest news, updates, and stories from Xandcastle. Fashion tips and design inspiration for kids and teens.',
+    images: [
+      {
+        url: '/logo.png',
+        width: 1200,
+        height: 630,
+        alt: 'Xandcastle Blog',
+      }
+    ],
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Blog - Latest News & Updates | Xandcastle',
+    description: 'Read the latest news and stories from Xandcastle.',
+    images: ['/logo.png'],
+  },
+  alternates: {
+    canonical: 'https://xandcastle.com/blog',
+  },
 }
 
 export default async function BlogPage({
@@ -59,9 +83,10 @@ export default async function BlogPage({
                       <div className="relative h-48 w-full">
                         <Image
                           src={post.coverImage}
-                          alt={post.title}
+                          alt={`${post.title} - Blog post cover image`}
                           fill
                           className="object-cover"
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         />
                       </div>
                     </Link>

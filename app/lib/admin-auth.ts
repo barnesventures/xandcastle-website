@@ -5,7 +5,7 @@ import { NextRequest, NextResponse } from 'next/server'
 // Admin email addresses - in production, this should be stored in the database
 const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(',') || ['admin@xandcastle.com']
 
-export async function isAdmin(email: string | null | undefined): boolean {
+export async function isAdmin(email: string | null | undefined): Promise<boolean> {
   if (!email) return false
   return ADMIN_EMAILS.includes(email)
 }

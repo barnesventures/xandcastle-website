@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/app/lib/prisma';
 import { sendShippingNotificationEmail } from '@/app/lib/email';
 import crypto from 'crypto';
+import { OrderStatus, Prisma } from '@prisma/client';
 
 interface PrintifyWebhookEvent {
   type: string;
@@ -176,21 +177,21 @@ async function handleShipmentDelivered(event: PrintifyWebhookEvent) {
   await prisma.order.update({
     where: { id: order.id },
     data: {
-      status: 'DELIVERED',
-      shipments: shipments || order.shipments,
+      status: OrderStatus.DELIVERED,
+      shipments: shipments ? shipments as Prisma.InputJsonValue : order.shipments,
     },
   });
 }
 
-function mapPrintifyStatus(printifyStatus: string): string {
-  const statusMap: Record<string, string> = {
-    'pending': 'PENDING',
-    'processing': 'PROCESSING',
-    'fulfilled': 'FULFILLED',
-    'cancelled': 'CANCELLED',
-    'on-hold': 'PROCESSING',
-    'partially-fulfilled': 'PROCESSING',
+function mapPrintifyStatus(printifyStatus: string): OrderStatus {
+  const statusMap: Record<string, OrderStatus> = {
+    'pending': OrderStatus.PENDING,
+    'processing': OrderStatus.PROCESSING,
+    'fulfilled': OrderStatus.FULFILLED,
+    'cancelled': OrderStatus.CANCELLED,
+    'on-hold': OrderStatus.PROCESSING,
+    'partially-fulfilled': OrderStatus.PROCESSING,
   };
 
-  return statusMap[printifyStatus.toLowerCase()] || 'PENDING';
+  return statusMap[printifyStatus.toLowerCase()] || OrderStatus.PENDING;
 }

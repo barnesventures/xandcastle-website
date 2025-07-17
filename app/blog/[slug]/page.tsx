@@ -3,6 +3,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { marked } from 'marked'
 import { CalendarIcon, TagIcon, UserIcon, ArrowLeftIcon } from '@heroicons/react/24/outline'
+import { Metadata } from 'next'
+import Script from 'next/script'
 
 async function getBlogPost(slug: string) {
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
@@ -24,17 +26,39 @@ export async function generateMetadata({
   params,
 }: {
   params: Promise<{ slug: string }>
-}) {
+}): Promise<Metadata> {
   const { slug } = await params
   const post = await getBlogPost(slug)
 
   return {
-    title: post.metaTitle || post.title,
+    title: post.metaTitle || `${post.title} - Xandcastle Blog`,
     description: post.metaDesc || post.excerpt || `Read ${post.title} on Xandcastle Blog`,
+    keywords: [...(post.tags || []), "kids fashion blog", "teens clothing", "Xandcastle news"],
+    authors: [{ name: post.authorName }],
     openGraph: {
       title: post.metaTitle || post.title,
       description: post.metaDesc || post.excerpt,
+      images: post.coverImage ? [
+        {
+          url: post.coverImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        }
+      ] : [],
+      type: 'article',
+      publishedTime: post.publishedAt,
+      authors: [post.authorName],
+      tags: post.tags,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.metaTitle || post.title,
+      description: post.metaDesc || post.excerpt,
       images: post.coverImage ? [post.coverImage] : [],
+    },
+    alternates: {
+      canonical: `https://xandcastle.com/blog/${slug}`,
     },
   }
 }
@@ -55,8 +79,44 @@ export default async function BlogPostPage({
 
   const htmlContent = marked(post.content)
 
+  // Create Article JSON-LD schema
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: post.title,
+    description: post.excerpt || post.metaDesc,
+    image: post.coverImage ? [post.coverImage] : ["https://xandcastle.com/logo.png"],
+    datePublished: post.publishedAt,
+    dateModified: post.updatedAt || post.publishedAt,
+    author: {
+      "@type": "Person",
+      name: post.authorName
+    },
+    publisher: {
+      "@type": "Organization",
+      name: "Xandcastle",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://xandcastle.com/logo.png"
+      }
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `https://xandcastle.com/blog/${slug}`
+    },
+    keywords: post.tags.join(', ')
+  };
+
   return (
-    <article className="min-h-screen bg-white">
+    <>
+      <Script
+        id="article-schema"
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(articleSchema)
+        }}
+      />
+      <article className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="mb-8">
           <Link
@@ -72,10 +132,11 @@ export default async function BlogPostPage({
           <div className="relative h-96 w-full mb-8 rounded-lg overflow-hidden">
             <Image
               src={post.coverImage}
-              alt={post.title}
+              alt={`${post.title} - Blog article header image`}
               fill
               className="object-cover"
               priority
+              sizes="(max-width: 1024px) 100vw, 896px"
             />
           </div>
         )}
@@ -128,5 +189,6 @@ export default async function BlogPostPage({
         </div>
       </div>
     </article>
+    </>
   )
 }

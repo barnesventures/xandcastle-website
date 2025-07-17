@@ -2,7 +2,16 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Returns & Exchanges - Xandcastle',
-  description: 'Learn about our returns and exchanges policy. We want you to love your Xandcastle gear!',
+  description: 'Learn about our 30-day returns and exchanges policy for kids clothing and Windsor souvenirs. Easy returns process. We want you to love your Xandcastle gear!',
+  keywords: ['returns policy', 'exchanges', '30 day returns', 'refund policy', 'kids clothing returns'],
+  openGraph: {
+    title: 'Returns & Exchanges - Xandcastle',
+    description: '30-day returns policy for kids clothing and Windsor souvenirs. Easy returns process.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://xandcastle.com/returns',
+  },
 };
 
 export default function ReturnsPage() {

@@ -2,7 +2,20 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Cookie Policy - Xandcastle',
-  description: 'Xandcastle cookie policy - Learn about how we use cookies.',
+  description: 'Xandcastle cookie policy - Learn how we use cookies to improve your shopping experience for kids clothing and Windsor souvenirs. GDPR compliant cookie usage.',
+  keywords: ['cookie policy', 'cookies', 'GDPR cookies', 'website cookies', 'privacy cookies'],
+  openGraph: {
+    title: 'Cookie Policy - Xandcastle',
+    description: 'Learn how we use cookies to improve your shopping experience.',
+    type: 'website',
+  },
+  alternates: {
+    canonical: 'https://xandcastle.com/cookies',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function CookiesPage() {
