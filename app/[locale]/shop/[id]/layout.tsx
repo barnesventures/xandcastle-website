@@ -3,12 +3,13 @@ import { getProductDetails } from '@/app/lib/printify-client';
 import { ErrorBoundary } from '@/app/components/ErrorBoundary';
 
 type Props = {
-  params: { id: string };
+  params: Promise<{ id: string; locale: string }>;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const product = await getProductDetails(params.id);
+    const { id } = await params;
+    const product = await getProductDetails(id);
     
     return {
       title: `${product.title} | Xandcastle`,
