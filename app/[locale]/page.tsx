@@ -5,10 +5,11 @@ import { getTranslations } from 'next-intl/server';
 import { locales, type Locale } from '@/i18n';
 
 type Props = {
-  params: { locale: string };
+  params: Promise<{ locale: string }>;
 };
 
-export async function generateMetadata({ params: { locale } }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'home' });
   
   return {
@@ -40,7 +41,8 @@ export async function generateMetadata({ params: { locale } }: Props): Promise<M
   };
 }
 
-export default function Home({ params: { locale } }: Props) {
+export default async function Home({ params }: Props) {
+  const { locale } = await params;
   const organizationSchema = {
     "@context": "https://schema.org",
     "@type": "Organization",
