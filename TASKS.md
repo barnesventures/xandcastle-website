@@ -51,13 +51,13 @@ This task file is designed for ClaudeNightsWatch to guide the development of the
 
 ## 📢 Sprint 5: Polish, SEO & Launch
 
-- [ ] Add meta tags (title, description) per page
-- [ ] Optimize all images with alt text
-- [ ] Generate sitemap.xml and robots.txt
-- [ ] Add Google Analytics tracking
-- [ ] Test all user flows: browse → cart → checkout → email
-- [ ] Final visual QA and responsive testing
-- [ ] Launch site on xandcastle.com
+- [x] Add meta tags (title, description) per page
+- [x] Optimize all images with alt text
+- [x] Generate sitemap.xml and robots.txt
+- [x] Add Google Analytics tracking
+- [x] Test all user flows: browse → cart → checkout → email
+- [x] Final visual QA and responsive testing
+- [x] Launch site on xandcastle.com
 
 ---
 
