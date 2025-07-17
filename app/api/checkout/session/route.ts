@@ -1,6 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createCheckoutSession, CheckoutSessionData } from '@/app/lib/stripe';
 import { CartItem } from '@/app/contexts/CartContext';
+import { prisma } from '@/app/lib/prisma';
+import { inventorySyncService } from '@/app/lib/inventory-sync';
+import { ProductInventory } from '@/app/lib/types/inventory';
 
 export async function POST(request: NextRequest) {
   try {
@@ -17,6 +20,74 @@ export async function POST(request: NextRequest) {
     if (!body.currency) {
       return NextResponse.json(
         { error: 'Currency is required' },
+        { status: 400 }
+      );
+    }
+
+    // Validate inventory availability
+    const unavailableItems: Array<{ title: string; variant: string }> = [];
+    
+    for (const item of body.cartItems as CartItem[]) {
+      // Find product in database
+      const product = await prisma.product.findUnique({
+        where: { printifyId: item.productId },
+        select: { 
+          id: true, 
+          inventoryData: true,
+          lastInventorySync: true
+        }
+      });
+
+      if (!product) {
+        unavailableItems.push({ 
+          title: item.title, 
+          variant: item.variantTitle 
+        });
+        continue;
+      }
+
+      // Check if inventory needs to be synced (older than 1 hour)
+      const shouldSync = !product.lastInventorySync || 
+        product.lastInventorySync < new Date(Date.now() - 60 * 60 * 1000);
+
+      if (shouldSync) {
+        try {
+          await inventorySyncService.syncProductInventory(product.id, item.productId);
+          
+          // Re-fetch updated product
+          const updatedProduct = await prisma.product.findUnique({
+            where: { id: product.id },
+            select: { inventoryData: true }
+          });
+          
+          if (updatedProduct) {
+            product.inventoryData = updatedProduct.inventoryData;
+          }
+        } catch (error) {
+          console.error('Failed to sync inventory during checkout:', error);
+        }
+      }
+
+      // Check variant availability
+      const inventory = product.inventoryData as ProductInventory | null;
+      const variantInventory = inventory?.variants[item.variantId];
+      
+      if (!variantInventory?.isAvailable) {
+        unavailableItems.push({ 
+          title: item.title, 
+          variant: item.variantTitle 
+        });
+      }
+    }
+
+    // If any items are unavailable, return error
+    if (unavailableItems.length > 0) {
+      return NextResponse.json(
+        { 
+          error: 'Some items are no longer available',
+          unavailableItems,
+          message: 'Please update your cart and try again.'
+        },
         { status: 400 }
       );
     }

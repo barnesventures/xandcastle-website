@@ -1,90 +1,105 @@
 import { MetadataRoute } from 'next'
 import { prisma } from '@/app/lib/prisma'
+import { locales, defaultLocale } from '@/i18n'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://xandcastle.com'
   
   // Static pages with their relative importance and update frequency
-  const staticPages = [
+  const staticPaths = [
     {
-      url: baseUrl,
-      lastModified: new Date(),
+      path: '',
       changeFrequency: 'daily' as const,
       priority: 1,
     },
     {
-      url: `${baseUrl}/shop`,
-      lastModified: new Date(),
+      path: '/shop',
       changeFrequency: 'daily' as const,
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/windsor`,
-      lastModified: new Date(),
+      path: '/windsor',
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
     {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
+      path: '/blog',
       changeFrequency: 'weekly' as const,
       priority: 0.7,
     },
     {
-      url: `${baseUrl}/about`,
-      lastModified: new Date(),
+      path: '/about',
       changeFrequency: 'monthly' as const,
       priority: 0.6,
     },
     {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
+      path: '/contact',
       changeFrequency: 'monthly' as const,
       priority: 0.5,
     },
     {
-      url: `${baseUrl}/cart`,
-      lastModified: new Date(),
+      path: '/cart',
       changeFrequency: 'monthly' as const,
       priority: 0.4,
     },
     {
-      url: `${baseUrl}/account`,
-      lastModified: new Date(),
+      path: '/account',
       changeFrequency: 'monthly' as const,
       priority: 0.4,
     },
     {
-      url: `${baseUrl}/shipping`,
-      lastModified: new Date(),
+      path: '/shipping',
       changeFrequency: 'monthly' as const,
       priority: 0.3,
     },
     {
-      url: `${baseUrl}/returns`,
-      lastModified: new Date(),
+      path: '/returns',
       changeFrequency: 'monthly' as const,
       priority: 0.3,
     },
     {
-      url: `${baseUrl}/privacy`,
-      lastModified: new Date(),
+      path: '/privacy',
       changeFrequency: 'yearly' as const,
       priority: 0.2,
     },
     {
-      url: `${baseUrl}/terms`,
-      lastModified: new Date(),
+      path: '/terms',
       changeFrequency: 'yearly' as const,
       priority: 0.2,
     },
     {
-      url: `${baseUrl}/cookies`,
-      lastModified: new Date(),
+      path: '/cookies',
       changeFrequency: 'yearly' as const,
       priority: 0.2,
     },
   ]
+
+  const staticPages: MetadataRoute.Sitemap = []
+  
+  // Generate URLs for all locales
+  for (const locale of locales) {
+    for (const page of staticPaths) {
+      const url = locale === defaultLocale 
+        ? `${baseUrl}${page.path}`
+        : `${baseUrl}/${locale}${page.path}`
+      
+      staticPages.push({
+        url,
+        lastModified: new Date(),
+        changeFrequency: page.changeFrequency,
+        priority: page.priority,
+        alternates: {
+          languages: locales.reduce((acc, loc) => {
+            const langUrl = loc === defaultLocale 
+              ? `${baseUrl}${page.path}`
+              : `${baseUrl}/${loc}${page.path}`
+            acc[loc] = langUrl
+            return acc
+          }, {} as Record<string, string>)
+        }
+      })
+    }
+  }
 
   // Fetch dynamic content
   try {
@@ -99,16 +114,31 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       },
     })
 
-    const blogUrls = blogPosts.map((post) => ({
-      url: `${baseUrl}/blog/${post.slug}`,
-      lastModified: post.updatedAt,
-      changeFrequency: 'monthly' as const,
-      priority: 0.6,
-    }))
-
-    // Note: Product pages would need to be fetched from Printify API
-    // For now, we'll assume the shop page lists all products dynamically
-    // In a production app, you might want to fetch and list individual product URLs
+    const blogUrls: MetadataRoute.Sitemap = []
+    
+    for (const locale of locales) {
+      for (const post of blogPosts) {
+        const url = locale === defaultLocale 
+          ? `${baseUrl}/blog/${post.slug}`
+          : `${baseUrl}/${locale}/blog/${post.slug}`
+        
+        blogUrls.push({
+          url,
+          lastModified: post.updatedAt,
+          changeFrequency: 'monthly',
+          priority: 0.6,
+          alternates: {
+            languages: locales.reduce((acc, loc) => {
+              const langUrl = loc === defaultLocale 
+                ? `${baseUrl}/blog/${post.slug}`
+                : `${baseUrl}/${loc}/blog/${post.slug}`
+              acc[loc] = langUrl
+              return acc
+            }, {} as Record<string, string>)
+          }
+        })
+      }
+    }
 
     return [...staticPages, ...blogUrls]
   } catch (error) {

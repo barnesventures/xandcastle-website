@@ -1,0 +1,190 @@
+{
+  "navigation": {
+    "shop": "Boutique",
+    "windsorCollection": "Collection Windsor",
+    "about": "À Propos",
+    "blog": "Blog",
+    "account": "Compte",
+    "myAccount": "Mon Compte",
+    "orderHistory": "Historique des Commandes",
+    "adminDashboard": "Tableau de Bord Admin",
+    "signIn": "Se Connecter",
+    "signOut": "Se Déconnecter",
+    "cart": "Panier"
+  },
+  "common": {
+    "addToCart": "Ajouter au Panier",
+    "viewCart": "Voir le Panier",
+    "checkout": "Commander",
+    "continueShopping": "Continuer les Achats",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "currency": "Devise",
+    "language": "Langue",
+    "learnMore": "En Savoir Plus",
+    "viewDetails": "Voir les Détails",
+    "or": "ou"
+  },
+  "products": {
+    "categories": {
+      "all": "Tous les Produits",
+      "tshirts": "T-Shirts",
+      "hoodies": "Sweats à Capuche",
+      "accessories": "Accessoires",
+      "windsor": "Collection Touristique Windsor"
+    },
+    "labels": {
+      "new": "Nouveau",
+      "sale": "Solde",
+      "soldOut": "Épuisé",
+      "featured": "En Vedette",
+      "popular": "Populaire"
+    },
+    "options": {
+      "size": "Taille",
+      "color": "Couleur",
+      "quantity": "Quantité",
+      "selectSize": "Sélectionner une taille",
+      "selectColor": "Sélectionner une couleur"
+    },
+    "info": {
+      "description": "Description",
+      "details": "Détails du Produit",
+      "shipping": "Infos Livraison",
+      "returns": "Politique de Retour"
+    }
+  },
+  "cart": {
+    "title": "Panier d'Achat",
+    "empty": "Votre panier est vide",
+    "emptyMessage": "Ajoutez des trucs cool pour commencer!",
+    "items": "{count, plural, =0 {Aucun article} =1 {1 article} other {# articles}}",
+    "subtotal": "Sous-total",
+    "shipping": "Livraison",
+    "tax": "Taxes",
+    "total": "Total",
+    "remove": "Retirer",
+    "updateQuantity": "Mettre à jour la quantité",
+    "proceedToCheckout": "Passer à la Commande",
+    "calculateShipping": "Calculer la livraison",
+    "shippingCalculated": "Calculé à la commande",
+    "freeShipping": "Livraison gratuite sur les commandes de plus de {amount}"
+  },
+  "checkout": {
+    "title": "Commande",
+    "contactInfo": "Informations de Contact",
+    "shippingAddress": "Adresse de Livraison",
+    "paymentMethod": "Méthode de Paiement",
+    "orderSummary": "Résumé de la Commande",
+    "placeOrder": "Passer la Commande",
+    "processing": "Traitement...",
+    "secureCheckout": "Paiement Sécurisé",
+    "fields": {
+      "email": "Email",
+      "firstName": "Prénom",
+      "lastName": "Nom",
+      "address": "Adresse",
+      "addressLine2": "Appartement, suite, etc. (optionnel)",
+      "city": "Ville",
+      "state": "État / Province",
+      "postalCode": "Code Postal",
+      "country": "Pays",
+      "phone": "Téléphone"
+    },
+    "validation": {
+      "required": "Ce champ est obligatoire",
+      "invalidEmail": "Veuillez entrer un email valide",
+      "invalidPhone": "Veuillez entrer un numéro de téléphone valide",
+      "invalidPostalCode": "Veuillez entrer un code postal valide"
+    }
+  },
+  "account": {
+    "welcome": "Bon retour, {name}!",
+    "dashboard": "Tableau de Bord du Compte",
+    "orders": "Vos Commandes",
+    "addresses": "Adresses Enregistrées",
+    "settings": "Paramètres du Compte",
+    "noOrders": "Vous n'avez pas encore passé de commande",
+    "orderNumber": "Commande #{number}",
+    "orderDate": "Passée le {date}",
+    "orderStatus": "Statut: {status}",
+    "orderTotal": "Total: {amount}",
+    "viewOrder": "Voir la Commande",
+    "trackOrder": "Suivre la Commande"
+  },
+  "footer": {
+    "customerService": "Service Client",
+    "company": "Entreprise",
+    "connect": "Connecter",
+    "newsletter": "Newsletter",
+    "newsletterText": "Recevez les dernières mises à jour sur les nouveaux produits et les ventes à venir",
+    "subscribe": "S'abonner",
+    "links": {
+      "contact": "Nous Contacter",
+      "shipping": "Infos Livraison",
+      "returns": "Retours",
+      "faq": "FAQ",
+      "about": "À Propos de Nous",
+      "blog": "Blog",
+      "careers": "Carrières",
+      "privacy": "Politique de Confidentialité",
+      "terms": "Conditions d'Utilisation",
+      "cookies": "Politique des Cookies"
+    },
+    "copyright": "© {year} Xandcastle. Tous droits réservés.",
+    "madeWith": "Fait avec créativité et fun"
+  },
+  "home": {
+    "hero": {
+      "title": "Vêtements Cool pour Jeunes Légendes",
+      "subtitle": "Des designs uniques qui laissent briller ta personnalité",
+      "cta": "Acheter Maintenant"
+    },
+    "featured": {
+      "title": "Produits en Vedette",
+      "subtitle": "Découvre ce qui est tendance"
+    },
+    "windsor": {
+      "title": "Collection Touristique Windsor",
+      "subtitle": "Designs exclusifs inspirés de la ville royale",
+      "cta": "Explorer la Collection"
+    }
+  },
+  "shop": {
+    "title": "Tous les Produits",
+    "filters": {
+      "category": "Catégorie",
+      "price": "Prix",
+      "size": "Taille",
+      "color": "Couleur",
+      "sortBy": "Trier Par",
+      "newest": "Plus Récent",
+      "priceLowToHigh": "Prix: Croissant",
+      "priceHighToLow": "Prix: Décroissant",
+      "popular": "Plus Populaire"
+    },
+    "results": "{count, plural, =0 {Aucun produit trouvé} =1 {1 produit} other {# produits}}",
+    "loadMore": "Charger Plus"
+  },
+  "errors": {
+    "general": "Quelque chose s'est mal passé",
+    "notFound": "Page non trouvée",
+    "unauthorized": "Vous devez vous connecter pour accéder à cette page",
+    "forbidden": "Vous n'avez pas la permission d'accéder à cette ressource",
+    "network": "Erreur réseau. Veuillez vérifier votre connexion",
+    "tryAgain": "Réessayer",
+    "goHome": "Aller à l'Accueil"
+  }
+}

@@ -1,15 +1,18 @@
 'use client';
 
-import Link from 'next/link';
+import LocalizedLink from '@/app/components/LocalizedLink';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import { 
   ChartBarIcon, 
   DocumentTextIcon, 
   ShoppingBagIcon, 
   ArrowsRightLeftIcon,
   ArrowLeftOnRectangleIcon,
-  HomeIcon
+  HomeIcon,
+  EnvelopeIcon,
+  CubeIcon
 } from '@heroicons/react/24/outline';
 
 interface AdminNavItem {
@@ -22,6 +25,8 @@ const navigation: AdminNavItem[] = [
   { name: 'Dashboard', href: '/admin', icon: ChartBarIcon },
   { name: 'Blog Posts', href: '/admin/blog', icon: DocumentTextIcon },
   { name: 'Orders', href: '/admin/orders', icon: ShoppingBagIcon },
+  { name: 'Inventory', href: '/admin/inventory', icon: CubeIcon },
+  { name: 'Newsletter', href: '/admin/newsletter', icon: EnvelopeIcon },
   { name: 'Products Sync', href: '/admin/products', icon: ArrowsRightLeftIcon },
 ];
 
@@ -45,20 +50,20 @@ export default function AdminLayout({
             </span>
           </div>
           <div className="flex items-center space-x-4">
-            <Link
+            <LocalizedLink
               href="/"
               className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition"
             >
               <HomeIcon className="h-5 w-5" />
               <span>View Store</span>
-            </Link>
-            <Link
+            </LocalizedLink>
+            <LocalizedLink
               href="/auth/signout"
               className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition"
             >
               <ArrowLeftOnRectangleIcon className="h-5 w-5" />
               <span>Sign Out</span>
-            </Link>
+            </LocalizedLink>
           </div>
         </div>
       </header>
@@ -75,7 +80,7 @@ export default function AdminLayout({
                 
                 return (
                   <li key={item.name}>
-                    <Link
+                    <LocalizedLink
                       href={item.href}
                       className={`
                         flex items-center space-x-3 px-4 py-3 rounded-lg transition
@@ -87,7 +92,7 @@ export default function AdminLayout({
                     >
                       <Icon className="h-5 w-5" />
                       <span className="font-medium">{item.name}</span>
-                    </Link>
+                    </LocalizedLink>
                   </li>
                 );
               })}

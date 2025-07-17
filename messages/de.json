@@ -1,0 +1,190 @@
+{
+  "navigation": {
+    "shop": "Shop",
+    "windsorCollection": "Windsor Kollektion",
+    "about": "Über Uns",
+    "blog": "Blog",
+    "account": "Konto",
+    "myAccount": "Mein Konto",
+    "orderHistory": "Bestellverlauf",
+    "adminDashboard": "Admin-Dashboard",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "cart": "Warenkorb"
+  },
+  "common": {
+    "addToCart": "In den Warenkorb",
+    "viewCart": "Warenkorb ansehen",
+    "checkout": "Zur Kasse",
+    "continueShopping": "Weiter einkaufen",
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "search": "Suchen",
+    "filter": "Filtern",
+    "sort": "Sortieren",
+    "currency": "Währung",
+    "language": "Sprache",
+    "learnMore": "Mehr erfahren",
+    "viewDetails": "Details ansehen",
+    "or": "oder"
+  },
+  "products": {
+    "categories": {
+      "all": "Alle Produkte",
+      "tshirts": "T-Shirts",
+      "hoodies": "Hoodies",
+      "accessories": "Zubehör",
+      "windsor": "Windsor Touristen-Kollektion"
+    },
+    "labels": {
+      "new": "Neu",
+      "sale": "Angebot",
+      "soldOut": "Ausverkauft",
+      "featured": "Empfohlen",
+      "popular": "Beliebt"
+    },
+    "options": {
+      "size": "Größe",
+      "color": "Farbe",
+      "quantity": "Menge",
+      "selectSize": "Größe auswählen",
+      "selectColor": "Farbe auswählen"
+    },
+    "info": {
+      "description": "Beschreibung",
+      "details": "Produktdetails",
+      "shipping": "Versandinfo",
+      "returns": "Rückgaberichtlinien"
+    }
+  },
+  "cart": {
+    "title": "Einkaufswagen",
+    "empty": "Dein Warenkorb ist leer",
+    "emptyMessage": "Füge coole Sachen hinzu, um loszulegen!",
+    "items": "{count, plural, =0 {Keine Artikel} =1 {1 Artikel} other {# Artikel}}",
+    "subtotal": "Zwischensumme",
+    "shipping": "Versand",
+    "tax": "Steuern",
+    "total": "Gesamt",
+    "remove": "Entfernen",
+    "updateQuantity": "Menge aktualisieren",
+    "proceedToCheckout": "Zur Kasse gehen",
+    "calculateShipping": "Versand berechnen",
+    "shippingCalculated": "Wird an der Kasse berechnet",
+    "freeShipping": "Kostenloser Versand bei Bestellungen über {amount}"
+  },
+  "checkout": {
+    "title": "Kasse",
+    "contactInfo": "Kontaktinformationen",
+    "shippingAddress": "Lieferadresse",
+    "paymentMethod": "Zahlungsmethode",
+    "orderSummary": "Bestellübersicht",
+    "placeOrder": "Bestellung aufgeben",
+    "processing": "Verarbeitung...",
+    "secureCheckout": "Sichere Kasse",
+    "fields": {
+      "email": "E-Mail",
+      "firstName": "Vorname",
+      "lastName": "Nachname",
+      "address": "Adresse",
+      "addressLine2": "Wohnung, Suite, etc. (optional)",
+      "city": "Stadt",
+      "state": "Bundesland",
+      "postalCode": "Postleitzahl",
+      "country": "Land",
+      "phone": "Telefonnummer"
+    },
+    "validation": {
+      "required": "Dieses Feld ist erforderlich",
+      "invalidEmail": "Bitte geben Sie eine gültige E-Mail ein",
+      "invalidPhone": "Bitte geben Sie eine gültige Telefonnummer ein",
+      "invalidPostalCode": "Bitte geben Sie eine gültige Postleitzahl ein"
+    }
+  },
+  "account": {
+    "welcome": "Willkommen zurück, {name}!",
+    "dashboard": "Konto-Dashboard",
+    "orders": "Deine Bestellungen",
+    "addresses": "Gespeicherte Adressen",
+    "settings": "Kontoeinstellungen",
+    "noOrders": "Du hast noch keine Bestellungen aufgegeben",
+    "orderNumber": "Bestellung #{number}",
+    "orderDate": "Aufgegeben am {date}",
+    "orderStatus": "Status: {status}",
+    "orderTotal": "Gesamt: {amount}",
+    "viewOrder": "Bestellung ansehen",
+    "trackOrder": "Bestellung verfolgen"
+  },
+  "footer": {
+    "customerService": "Kundendienst",
+    "company": "Unternehmen",
+    "connect": "Verbinden",
+    "newsletter": "Newsletter",
+    "newsletterText": "Erhalte die neuesten Updates zu neuen Produkten und kommenden Verkäufen",
+    "subscribe": "Abonnieren",
+    "links": {
+      "contact": "Kontakt",
+      "shipping": "Versandinfo",
+      "returns": "Rückgaben",
+      "faq": "FAQ",
+      "about": "Über Uns",
+      "blog": "Blog",
+      "careers": "Karriere",
+      "privacy": "Datenschutzerklärung",
+      "terms": "Nutzungsbedingungen",
+      "cookies": "Cookie-Richtlinie"
+    },
+    "copyright": "© {year} Xandcastle. Alle Rechte vorbehalten.",
+    "madeWith": "Mit Kreativität und Spaß gemacht"
+  },
+  "home": {
+    "hero": {
+      "title": "Coole Klamotten für junge Legenden",
+      "subtitle": "Einzigartige Designs, die deine Persönlichkeit strahlen lassen",
+      "cta": "Jetzt shoppen"
+    },
+    "featured": {
+      "title": "Empfohlene Produkte",
+      "subtitle": "Schau dir an, was im Trend ist"
+    },
+    "windsor": {
+      "title": "Windsor Touristen-Kollektion",
+      "subtitle": "Exklusive Designs inspiriert von der königlichen Stadt",
+      "cta": "Kollektion erkunden"
+    }
+  },
+  "shop": {
+    "title": "Alle Produkte",
+    "filters": {
+      "category": "Kategorie",
+      "price": "Preis",
+      "size": "Größe",
+      "color": "Farbe",
+      "sortBy": "Sortieren nach",
+      "newest": "Neueste",
+      "priceLowToHigh": "Preis: Niedrig bis Hoch",
+      "priceHighToLow": "Preis: Hoch bis Niedrig",
+      "popular": "Beliebteste"
+    },
+    "results": "{count, plural, =0 {Keine Produkte gefunden} =1 {1 Produkt} other {# Produkte}}",
+    "loadMore": "Mehr laden"
+  },
+  "errors": {
+    "general": "Etwas ist schief gelaufen",
+    "notFound": "Seite nicht gefunden",
+    "unauthorized": "Du musst dich anmelden, um auf diese Seite zuzugreifen",
+    "forbidden": "Du hast keine Berechtigung, auf diese Ressource zuzugreifen",
+    "network": "Netzwerkfehler. Bitte überprüfe deine Verbindung",
+    "tryAgain": "Erneut versuchen",
+    "goHome": "Zur Startseite"
+  }
+}

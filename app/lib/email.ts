@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import { Order } from '@prisma/client';
+import { generateRestockNotificationEmail } from './email-templates/restock-notification';
 
 // Initialize Resend with API key from environment
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -335,6 +336,47 @@ Track Your Package: ${trackingUrl}
     console.log('Shipping notification email sent:', result);
   } catch (error) {
     console.error('Failed to send shipping notification email:', error);
+    throw error;
+  }
+}
+
+/**
+ * Send restock notification email
+ */
+export async function sendRestockNotificationEmail(data: {
+  email: string;
+  productTitle: string;
+  variantTitle: string;
+  productId: string;
+  customerName?: string;
+}): Promise<void> {
+  if (!process.env.RESEND_API_KEY) {
+    console.warn('RESEND_API_KEY not configured - skipping email send');
+    return;
+  }
+
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://xandcastle.com';
+  const productUrl = `${baseUrl}/shop/${data.productId}`;
+
+  const emailContent = generateRestockNotificationEmail({
+    productTitle: data.productTitle,
+    variantTitle: data.variantTitle,
+    productUrl,
+    customerName: data.customerName,
+  });
+
+  try {
+    const result = await resend.emails.send({
+      from: 'Xandcastle <notifications@xandcastle.com>',
+      to: data.email,
+      subject: emailContent.subject,
+      html: emailContent.html,
+      text: emailContent.text,
+    });
+
+    console.log('Restock notification email sent:', result);
+  } catch (error) {
+    console.error('Failed to send restock notification email:', error);
     throw error;
   }
 }

@@ -35,6 +35,7 @@
     "marked": "^16.0.0",
     "next": "15.1.0",
     "next-auth": "^5.0.0-beta.29",
+    "next-intl": "^4.3.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "resend": "^4.6.0",

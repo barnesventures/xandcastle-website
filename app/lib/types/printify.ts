@@ -39,7 +39,8 @@ export interface PrintifyVariantWithPrice extends PrintifyVariant {
   price: number; // Price in cents (USD)
   is_enabled: boolean;
   is_default: boolean;
-  is_available: boolean;
+  is_available: boolean; // Indicates if variant is in stock
+  quantity?: number; // Optional quantity field if provided by API
   options: {
     color: string;
     size: string;

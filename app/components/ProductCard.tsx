@@ -1,4 +1,4 @@
-import Link from "next/link";
+import LocalizedLink from "./LocalizedLink";
 import { formatPrice } from "../lib/printify-client";
 import { ProductImage } from "./OptimizedImage";
 
@@ -28,7 +28,7 @@ export default function ProductCard({
     : `From ${formatPrice(priceRange.min, priceRange.currency)}`;
 
   return (
-    <Link href={`/products/${id}`} className="group">
+    <LocalizedLink href={`/shop/${id}`} className="group">
       <article className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
         <div className="aspect-square relative overflow-hidden bg-gray-100">
           <ProductImage
@@ -66,6 +66,6 @@ export default function ProductCard({
           </div>
         </div>
       </article>
-    </Link>
+    </LocalizedLink>
   );
 }

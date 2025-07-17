@@ -4,13 +4,15 @@ import { Fragment } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import Image from 'next/image';
-import Link from 'next/link';
+import LocalizedLink from './LocalizedLink';
 import { useCart } from '@/app/contexts/CartContext';
 import { useCurrency } from '@/app/contexts/CurrencyContext';
+import { useTranslations } from 'next-intl';
 
 export function MiniCart() {
   const { items, itemCount, subtotal, removeItem, updateQuantity, isOpen, setIsOpen } = useCart();
   const { convertPrice, formatPrice } = useCurrency();
+  const t = useTranslations();
 
   return (
     <Transition.Root show={isOpen} as={Fragment}>
@@ -44,7 +46,7 @@ export function MiniCart() {
                     <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                       <div className="flex items-start justify-between">
                         <Dialog.Title className="text-lg font-medium text-gray-900">
-                          Shopping cart
+                          {t('cart.title')}
                         </Dialog.Title>
                         <div className="ml-3 flex h-7 items-center">
                           <button
@@ -53,7 +55,7 @@ export function MiniCart() {
                             onClick={() => setIsOpen(false)}
                           >
                             <span className="absolute -inset-0.5" />
-                            <span className="sr-only">Close panel</span>
+                            <span className="sr-only">{t('common.close')}</span>
                             <XMarkIcon className="h-6 w-6" aria-hidden="true" />
                           </button>
                         </div>
@@ -62,14 +64,14 @@ export function MiniCart() {
                       <div className="mt-8">
                         {itemCount === 0 ? (
                           <div className="text-center py-12">
-                            <p className="text-gray-500">Your cart is empty</p>
-                            <Link
+                            <p className="text-gray-500">{t('cart.empty')}</p>
+                            <LocalizedLink
                               href="/shop"
                               className="mt-4 inline-block text-xandcastle-purple hover:text-purple-700"
                               onClick={() => setIsOpen(false)}
                             >
-                              Continue Shopping
-                            </Link>
+                              {t('common.continueShopping')}
+                            </LocalizedLink>
                           </div>
                         ) : (
                           <div className="flow-root">
@@ -106,7 +108,7 @@ export function MiniCart() {
                                         >
                                           -
                                         </button>
-                                        <span className="mx-2 text-gray-500">Qty {item.quantity}</span>
+                                        <span className="mx-2 text-gray-500">{t('products.options.quantity')} {item.quantity}</span>
                                         <button
                                           onClick={() => updateQuantity(item.id, item.quantity + 1)}
                                           className="text-gray-500 hover:text-gray-700"
@@ -121,7 +123,7 @@ export function MiniCart() {
                                           className="font-medium text-xandcastle-purple hover:text-purple-700"
                                           onClick={() => removeItem(item.id)}
                                         >
-                                          Remove
+                                          {t('cart.remove')}
                                         </button>
                                       </div>
                                     </div>
@@ -137,31 +139,31 @@ export function MiniCart() {
                     {itemCount > 0 && (
                       <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                         <div className="flex justify-between text-base font-medium text-gray-900">
-                          <p>Subtotal</p>
+                          <p>{t('cart.subtotal')}</p>
                           <p>{formatPrice(convertPrice(subtotal))}</p>
                         </div>
                         <p className="mt-0.5 text-sm text-gray-500">
-                          Shipping and taxes calculated at checkout.
+                          {t('cart.shippingCalculated')}
                         </p>
                         <div className="mt-6">
-                          <Link
+                          <LocalizedLink
                             href="/checkout"
                             className="flex items-center justify-center rounded-md border border-transparent bg-xandcastle-purple px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-purple-700"
                             onClick={() => setIsOpen(false)}
                           >
-                            Checkout
-                          </Link>
+                            {t('common.checkout')}
+                          </LocalizedLink>
                         </div>
                         <div className="mt-6 flex justify-center text-center text-sm text-gray-500">
                           <p>
-                            or{' '}
-                            <Link
+                            {t('common.or', { defaultValue: 'or' })}{' '}
+                            <LocalizedLink
                               href="/cart"
                               className="font-medium text-xandcastle-purple hover:text-purple-700"
                               onClick={() => setIsOpen(false)}
                             >
-                              View Cart
-                            </Link>
+                              {t('common.viewCart')}
+                            </LocalizedLink>
                           </p>
                         </div>
                       </div>

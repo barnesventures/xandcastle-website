@@ -2,18 +2,22 @@
 
 import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
-import { ProductDetails, getProduct } from '@/app/lib/printify-client';
+import { ProductDetails, getProductDetails } from '@/app/lib/printify-client';
 import { ProductDetailSkeleton } from '@/app/components/LoadingSkeleton';
 import ErrorMessage from '@/app/components/ErrorMessage';
 import { ProductImagesClient } from './ProductImagesClient';
 import { AddToCart } from '@/app/components/AddToCart';
 import { ProductViewTracker } from '@/app/components/ProductViewTracker';
+import { StockBadge } from '@/app/components/StockBadge';
+import { StockStatus } from '@/app/lib/types/inventory';
 
 export function ProductDetailClient() {
   const params = useParams();
   const [product, setProduct] = useState<ProductDetails | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [stockStatus, setStockStatus] = useState<StockStatus | undefined>();
+  const [inventoryInfo, setInventoryInfo] = useState<{ totalInStock: number; totalVariants: number } | null>(null);
 
   useEffect(() => {
     loadProduct();
@@ -23,8 +27,16 @@ export function ProductDetailClient() {
     try {
       setLoading(true);
       setError(null);
-      const data = await getProduct(params.id as string);
+      const data = await getProductDetails(params.id as string);
       setProduct(data);
+      
+      // Extract stock status and inventory info from the response
+      if ('stockStatus' in data) {
+        setStockStatus(data.stockStatus as StockStatus);
+      }
+      if ('inventory' in data) {
+        setInventoryInfo(data.inventory as { totalInStock: number; totalVariants: number });
+      }
     } catch (err) {
       console.error('Error loading product:', err);
       setError('Failed to load product details. Please try again.');
@@ -62,8 +74,16 @@ export function ProductDetailClient() {
           
           <div className="space-y-6">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
+              <div className="flex items-start justify-between">
+                <h1 className="text-3xl font-bold text-gray-900">{product.title}</h1>
+                {stockStatus && <StockBadge status={stockStatus} className="ml-4" />}
+              </div>
               <p className="mt-4 text-lg text-gray-600">{product.description}</p>
+              {inventoryInfo && stockStatus === StockStatus.LOW_STOCK && (
+                <p className="mt-2 text-sm text-yellow-700">
+                  Only {inventoryInfo.totalInStock} of {inventoryInfo.totalVariants} variants available
+                </p>
+              )}
             </div>
             
             <AddToCart product={product} />

@@ -1,27 +1,52 @@
 'use client';
 
-import Link from 'next/link';
+import LocalizedLink from './LocalizedLink';
 import Image from 'next/image';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 import * as gtag from '@/app/utils/analytics';
 
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const t = useTranslations('footer');
 
   const handleNewsletterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubscribeStatus('loading');
     
-    // Track newsletter signup
-    gtag.signUp('newsletter');
-    
-    // Placeholder for newsletter signup
-    setTimeout(() => {
-      setSubscribeStatus('success');
-      setEmail('');
-      setTimeout(() => setSubscribeStatus('idle'), 3000);
-    }, 1000);
+    try {
+      const response = await fetch('/api/newsletter/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email,
+          source: 'footer',
+        }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Track newsletter signup
+        gtag.signUp('newsletter');
+        
+        setSubscribeStatus('success');
+        setEmail('');
+        
+        // Keep success message visible for longer since it's important
+        setTimeout(() => setSubscribeStatus('idle'), 5000);
+      } else {
+        setSubscribeStatus('error');
+        setTimeout(() => setSubscribeStatus('idle'), 5000);
+      }
+    } catch (error) {
+      console.error('Newsletter signup error:', error);
+      setSubscribeStatus('error');
+      setTimeout(() => setSubscribeStatus('idle'), 5000);
+    }
   };
 
   return (
@@ -31,10 +56,10 @@ export default function Footer() {
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center">
             <h3 className="text-2xl md:text-3xl font-bold mb-4">
-              Join the Castle Crew! 🏰
+              {t('newsletter')}
             </h3>
             <p className="mb-6 opacity-90">
-              Get exclusive designs, special offers, and castle adventures delivered to your inbox!
+              {t('newsletterText')}
             </p>
             
             <form onSubmit={handleNewsletterSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
@@ -42,7 +67,7 @@ export default function Footer() {
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter your email"
+                placeholder={t('newsletterPlaceholder', { defaultValue: 'Enter your email' })}
                 className="flex-1 px-4 py-3 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
                 required
                 disabled={subscribeStatus === 'loading'}
@@ -52,12 +77,15 @@ export default function Footer() {
                 disabled={subscribeStatus === 'loading'}
                 className="bg-white text-xandcastle-purple px-6 py-3 rounded-full font-semibold hover:shadow-lg transition disabled:opacity-50"
               >
-                {subscribeStatus === 'loading' ? 'Subscribing...' : 'Subscribe'}
+                {subscribeStatus === 'loading' ? t('subscribing', { defaultValue: 'Subscribing...' }) : t('subscribe')}
               </button>
             </form>
             
             {subscribeStatus === 'success' && (
-              <p className="mt-4 text-green-300">Welcome to the crew! Check your email for a special surprise! 🎉</p>
+              <p className="mt-4 text-green-300">{t('subscribeSuccess', { defaultValue: 'Almost there! Check your email to confirm your subscription!' })}</p>
+            )}
+            {subscribeStatus === 'error' && (
+              <p className="mt-4 text-red-300">{t('subscribeError', { defaultValue: 'Oops! Something went wrong. Please try again.' })}</p>
             )}
           </div>
         </div>
@@ -69,7 +97,7 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Brand Section */}
             <div className="space-y-4">
-              <Link href="/" className="flex items-center space-x-2">
+              <LocalizedLink href="/" className="flex items-center space-x-2">
                 <Image
                   src="/logo.png"
                   alt="Xandcastle Logo"
@@ -77,9 +105,9 @@ export default function Footer() {
                   height={40}
                 />
                 <span className="font-bold text-xl">Xandcastle</span>
-              </Link>
+              </LocalizedLink>
               <p className="text-gray-400 text-sm">
-                Cool threads for creative kids! Where imagination meets awesome fashion.
+                {t('tagline', { defaultValue: 'Cool threads for creative kids! Where imagination meets awesome fashion.' })}
               </p>
               <div className="flex space-x-4">
                 <a 
@@ -108,64 +136,64 @@ export default function Footer() {
 
             {/* Shop Links */}
             <div>
-              <h4 className="font-semibold text-lg mb-4">Shop</h4>
+              <h4 className="font-semibold text-lg mb-4">{t('shop', { defaultValue: 'Shop' })}</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/shop" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/shop" className="text-gray-400 hover:text-white transition">
                     All Products
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/windsor" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/windsor" className="text-gray-400 hover:text-white transition">
                     Windsor Collection
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/shop?category=tshirts" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/shop?category=tshirts" className="text-gray-400 hover:text-white transition">
                     T-Shirts
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/shop?category=hoodies" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/shop?category=hoodies" className="text-gray-400 hover:text-white transition">
                     Hoodies
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/shop?sort=new" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/shop?sort=new" className="text-gray-400 hover:text-white transition">
                     New Arrivals
-                  </Link>
+                  </LocalizedLink>
                 </li>
               </ul>
             </div>
 
             {/* Customer Care */}
             <div>
-              <h4 className="font-semibold text-lg mb-4">Customer Care</h4>
+              <h4 className="font-semibold text-lg mb-4">{t('customerService')}</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/about" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/about" className="text-gray-400 hover:text-white transition">
                     About Us
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/contact" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/contact" className="text-gray-400 hover:text-white transition">
                     Contact Us
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/orders/track" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/orders/track" className="text-gray-400 hover:text-white transition">
                     Track Order
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/shipping" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/shipping" className="text-gray-400 hover:text-white transition">
                     Shipping Info
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/returns" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/returns" className="text-gray-400 hover:text-white transition">
                     Returns & Exchanges
-                  </Link>
+                  </LocalizedLink>
                 </li>
               </ul>
             </div>
@@ -175,29 +203,29 @@ export default function Footer() {
               <h4 className="font-semibold text-lg mb-4">My Account</h4>
               <ul className="space-y-2">
                 <li>
-                  <Link href="/auth/signin" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/auth/signin" className="text-gray-400 hover:text-white transition">
                     Sign In
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/auth/signup" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/auth/signup" className="text-gray-400 hover:text-white transition">
                     Create Account
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/account" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/account" className="text-gray-400 hover:text-white transition">
                     My Profile
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/account/orders" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/account/orders" className="text-gray-400 hover:text-white transition">
                     Order History
-                  </Link>
+                  </LocalizedLink>
                 </li>
                 <li>
-                  <Link href="/blog" className="text-gray-400 hover:text-white transition">
+                  <LocalizedLink href="/blog" className="text-gray-400 hover:text-white transition">
                     Castle Blog
-                  </Link>
+                  </LocalizedLink>
                 </li>
               </ul>
             </div>
@@ -206,12 +234,12 @@ export default function Footer() {
           {/* Mobile-friendly quick links */}
           <div className="mt-8 pt-8 border-t border-gray-800 lg:hidden">
             <div className="grid grid-cols-2 gap-4">
-              <Link href="/shop" className="bg-gray-800 text-center py-3 rounded-lg hover:bg-gray-700 transition">
+              <LocalizedLink href="/shop" className="bg-gray-800 text-center py-3 rounded-lg hover:bg-gray-700 transition">
                 Shop Now
-              </Link>
-              <Link href="/orders/track" className="bg-gray-800 text-center py-3 rounded-lg hover:bg-gray-700 transition">
+              </LocalizedLink>
+              <LocalizedLink href="/orders/track" className="bg-gray-800 text-center py-3 rounded-lg hover:bg-gray-700 transition">
                 Track Order
-              </Link>
+              </LocalizedLink>
             </div>
           </div>
         </div>
@@ -228,17 +256,17 @@ export default function Footer() {
             </div>
             
             <div className="flex flex-wrap justify-center gap-4 text-sm">
-              <Link href="/privacy" className="text-gray-400 hover:text-white transition">
+              <LocalizedLink href="/privacy" className="text-gray-400 hover:text-white transition">
                 Privacy Policy
-              </Link>
+              </LocalizedLink>
               <span className="text-gray-600">•</span>
-              <Link href="/terms" className="text-gray-400 hover:text-white transition">
+              <LocalizedLink href="/terms" className="text-gray-400 hover:text-white transition">
                 Terms of Service
-              </Link>
+              </LocalizedLink>
               <span className="text-gray-600">•</span>
-              <Link href="/cookies" className="text-gray-400 hover:text-white transition">
+              <LocalizedLink href="/cookies" className="text-gray-400 hover:text-white transition">
                 Cookie Policy
-              </Link>
+              </LocalizedLink>
             </div>
           </div>
         </div>

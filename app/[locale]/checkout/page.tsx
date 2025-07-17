@@ -33,6 +33,7 @@ export default function CheckoutPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isGuest, setIsGuest] = useState(true);
+  const [newsletterOptIn, setNewsletterOptIn] = useState(false);
 
   // Redirect to cart if empty
   useEffect(() => {
@@ -75,6 +76,25 @@ export default function CheckoutPage() {
     setError(null);
 
     try {
+      // If newsletter opt-in is checked, subscribe them
+      if (newsletterOptIn) {
+        try {
+          await fetch('/api/newsletter/subscribe', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              email: customerInfo.email,
+              source: 'checkout',
+            }),
+          });
+        } catch (newsletterError) {
+          // Don't block checkout if newsletter signup fails
+          console.error('Newsletter signup error:', newsletterError);
+        }
+      }
+
       // Create checkout session
       const response = await fetch('/api/checkout/session', {
         method: 'POST',
@@ -90,6 +110,15 @@ export default function CheckoutPage() {
 
       if (!response.ok) {
         const errorData = await response.json();
+        
+        // Handle inventory errors specifically
+        if (errorData.unavailableItems && errorData.unavailableItems.length > 0) {
+          const itemsList = errorData.unavailableItems
+            .map((item: any) => `${item.title} (${item.variant})`)
+            .join(', ');
+          throw new Error(`The following items are out of stock: ${itemsList}. Please update your cart and try again.`);
+        }
+        
         throw new Error(errorData.error || 'Failed to create checkout session');
       }
 
@@ -226,6 +255,25 @@ export default function CheckoutPage() {
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
+              </div>
+
+              {/* Newsletter Opt-in */}
+              <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg">
+                <label className="flex items-start cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={newsletterOptIn}
+                    onChange={(e) => setNewsletterOptIn(e.target.checked)}
+                    className="mt-1 mr-3 h-4 w-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500"
+                  />
+                  <div className="flex-1">
+                    <span className="font-medium text-gray-900">Join the Castle Crew! 🏰</span>
+                    <p className="text-sm text-gray-600 mt-1">
+                      Get exclusive designs, special offers, and castle adventures delivered to your inbox.
+                      You can unsubscribe anytime!
+                    </p>
+                  </div>
+                </label>
               </div>
 
               {error && <ErrorMessage message={error} />}

@@ -1,24 +1,27 @@
 'use client';
 
-import Link from "next/link";
+import LocalizedLink from "./LocalizedLink";
 import Image from "next/image";
 import { useCart } from '@/app/contexts/CartContext';
 import { ShoppingBagIcon, UserIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import CurrencySelector from './CurrencySelector';
+import LanguageSwitcher from './LanguageSwitcher';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function Header() {
   const { itemCount, setIsOpen } = useCart();
   const { data: session, status } = useSession();
   const [showDropdown, setShowDropdown] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const t = useTranslations('navigation');
 
   return (
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center">
+          <LocalizedLink href="/" className="flex items-center">
             <Image
               src="/logo.png"
               alt="Xandcastle - Cool t-shirts for kids and teens"
@@ -28,24 +31,27 @@ export default function Header() {
               priority
             />
             <span className="font-bold text-xl">Xandcastle</span>
-          </Link>
+          </LocalizedLink>
           
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/shop" className="hover:text-xandcastle-purple transition">
-              Shop
-            </Link>
-            <Link href="/windsor" className="hover:text-xandcastle-purple transition">
-              Windsor Collection
-            </Link>
-            <Link href="/about" className="hover:text-xandcastle-purple transition">
-              About
-            </Link>
-            <Link href="/blog" className="hover:text-xandcastle-purple transition">
-              Blog
-            </Link>
+            <LocalizedLink href="/shop" className="hover:text-xandcastle-purple transition">
+              {t('shop')}
+            </LocalizedLink>
+            <LocalizedLink href="/windsor" className="hover:text-xandcastle-purple transition">
+              {t('windsorCollection')}
+            </LocalizedLink>
+            <LocalizedLink href="/about" className="hover:text-xandcastle-purple transition">
+              {t('about')}
+            </LocalizedLink>
+            <LocalizedLink href="/blog" className="hover:text-xandcastle-purple transition">
+              {t('blog')}
+            </LocalizedLink>
           </div>
 
           <div className="flex items-center space-x-4">
+            <div className="hidden sm:block">
+              <LanguageSwitcher />
+            </div>
             <div className="hidden sm:block">
               <CurrencySelector />
             </div>
@@ -61,58 +67,58 @@ export default function Header() {
                   className="flex items-center space-x-2 hover:text-xandcastle-purple transition"
                 >
                   <UserIcon className="h-5 w-5" />
-                  <span className="hidden sm:inline">{session.user?.name || 'Account'}</span>
+                  <span className="hidden sm:inline">{session.user?.name || t('account')}</span>
                 </button>
                 
                 {showDropdown && (
                   <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
-                    <Link
+                    <LocalizedLink
                       href="/account"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
-                      My Account
-                    </Link>
-                    <Link
+                      {t('myAccount')}
+                    </LocalizedLink>
+                    <LocalizedLink
                       href="/account/orders"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
-                      Order History
-                    </Link>
+                      {t('orderHistory')}
+                    </LocalizedLink>
                     {session.user?.isAdmin && (
                       <>
                         <hr className="my-1" />
-                        <Link
+                        <LocalizedLink
                           href="/admin"
                           className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-medium"
                         >
-                          Admin Dashboard
-                        </Link>
+                          {t('adminDashboard')}
+                        </LocalizedLink>
                       </>
                     )}
                     <hr className="my-1" />
-                    <Link
+                    <LocalizedLink
                       href="/auth/signout"
                       className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     >
-                      Sign Out
-                    </Link>
+                      {t('signOut')}
+                    </LocalizedLink>
                   </div>
                 )}
               </div>
             ) : (
-              <Link 
+              <LocalizedLink 
                 href="/auth/signin" 
                 className="flex items-center space-x-1 hover:text-xandcastle-purple transition"
               >
                 <UserIcon className="h-5 w-5" />
-                <span className="hidden sm:inline">Sign In</span>
-              </Link>
+                <span className="hidden sm:inline">{t('signIn')}</span>
+              </LocalizedLink>
             )}
             
             <button
               onClick={() => setIsOpen(true)}
               className="relative hover:text-xandcastle-purple transition p-2"
-              aria-label="Open cart"
+              aria-label={t('cart')}
             >
               <ShoppingBagIcon className="h-6 w-6" />
               {itemCount > 0 && (
@@ -141,35 +147,38 @@ export default function Header() {
         {mobileMenuOpen && (
           <div className="md:hidden border-t border-gray-200">
             <div className="px-4 py-4 space-y-3">
-              <Link 
+              <LocalizedLink 
                 href="/shop" 
                 className="block py-2 hover:text-xandcastle-purple transition"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Shop
-              </Link>
-              <Link 
+                {t('shop')}
+              </LocalizedLink>
+              <LocalizedLink 
                 href="/windsor" 
                 className="block py-2 hover:text-xandcastle-purple transition"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Windsor Collection
-              </Link>
-              <Link 
+                {t('windsorCollection')}
+              </LocalizedLink>
+              <LocalizedLink 
                 href="/about" 
                 className="block py-2 hover:text-xandcastle-purple transition"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                About
-              </Link>
-              <Link 
+                {t('about')}
+              </LocalizedLink>
+              <LocalizedLink 
                 href="/blog" 
                 className="block py-2 hover:text-xandcastle-purple transition"
                 onClick={() => setMobileMenuOpen(false)}
               >
-                Blog
-              </Link>
+                {t('blog')}
+              </LocalizedLink>
               <div className="pt-4 border-t border-gray-200">
+                <LanguageSwitcher />
+              </div>
+              <div className="pt-4">
                 <CurrencySelector />
               </div>
             </div>

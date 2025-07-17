@@ -138,17 +138,73 @@ model Product {
   description      String?  @db.Text
   tags             String[] // Array of tags
   options          Json     // JSON array of product options (size, color, etc.)
-  variants         Json     // JSON array of variants with prices
+  variants         Json     // JSON array of variants with prices and inventory
   images           Json     // JSON array of image URLs
   isVisible        Boolean  @default(true)
   isWindsorProduct Boolean  @default(false) // Flag for Windsor tourist collection
+  inventoryData    Json?    // Cached inventory data by variant ID
+  lastInventorySync DateTime? // Last time inventory was synced
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
   lastSyncedAt     DateTime @default(now())
 
+  // Relations
+  restockNotifications RestockNotification[]
+
   @@index([printifyId])
   @@index([isVisible, isWindsorProduct])
   @@map("products")
+}
+
+// Newsletter subscriber model for GDPR-compliant mailing list
+model Newsletter {
+  id                 String    @id @default(cuid())
+  email              String    @unique
+  status             NewsletterStatus @default(PENDING)
+  confirmationToken  String?   @unique // Token for double opt-in
+  unsubscribeToken   String    @unique // Token for unsubscribe links
+  subscribedAt       DateTime? // When they confirmed subscription
+  unsubscribedAt     DateTime? // When they unsubscribed
+  source             String    @default("website") // Where they signed up (website, checkout, etc)
+  ipAddress          String?   // IP address for GDPR compliance
+  userAgent          String?   // Browser info for GDPR compliance
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+
+  @@index([email])
+  @@index([status])
+  @@index([confirmationToken])
+  @@index([unsubscribeToken])
+  @@map("newsletter_subscribers")
+}
+
+// Enum for newsletter subscription status
+enum NewsletterStatus {
+  PENDING    // Waiting for email confirmation
+  CONFIRMED  // Double opt-in completed
+  UNSUBSCRIBED // User unsubscribed
+}
+
+// Restock notification model for tracking customer requests
+model RestockNotification {
+  id           String   @id @default(cuid())
+  email        String
+  productId    String
+  variantId    Int      // Printify variant ID
+  variantTitle String   // Cached variant title (e.g., "Black / XL")
+  notified     Boolean  @default(false) // Whether notification was sent
+  notifiedAt   DateTime? // When notification was sent
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([email, productId, variantId]) // Prevent duplicate notifications
+  @@index([email])
+  @@index([productId, variantId])
+  @@index([notified])
+  @@map("restock_notifications")
 }
 
 // Enum for order status

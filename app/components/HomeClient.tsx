@@ -1,10 +1,12 @@
 "use client";
 
-import Link from "next/link";
+import LocalizedLink from "./LocalizedLink";
 import FeaturedProducts from "./FeaturedProducts";
 import WindsorCollection from "./WindsorCollection";
+import { useTranslations } from 'next-intl';
 
 export default function HomeClient() {
+  const t = useTranslations('home');
   return (
     <main className="flex min-h-screen flex-col">
       {/* Hero Section */}
@@ -13,24 +15,24 @@ export default function HomeClient() {
         <div className="relative z-10 text-white">
           <div className="container mx-auto px-4 py-16 sm:py-24 text-center">
             <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold mb-6 animate-fade-in">
-              Welcome to Xandcastle
+              {t('hero.title')}
             </h1>
             <p className="text-lg sm:text-xl md:text-2xl mb-8 max-w-2xl mx-auto opacity-90">
-              Unique clothing designs for kids and teens. Created by a young designer with big dreams!
+              {t('hero.subtitle')}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
+              <LocalizedLink
                 href="/shop"
                 className="bg-white text-xandcastle-purple px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-gray-100 transition transform hover:scale-105 shadow-lg"
               >
-                Shop Now
-              </Link>
-              <Link
+                {t('hero.cta')}
+              </LocalizedLink>
+              <LocalizedLink
                 href="/windsor"
                 className="border-2 border-white px-6 sm:px-8 py-3 sm:py-4 rounded-full font-semibold hover:bg-white hover:text-xandcastle-purple transition transform hover:scale-105"
               >
-                Windsor Collection
-              </Link>
+                {t('windsor.title')}
+              </LocalizedLink>
             </div>
           </div>
         </div>
