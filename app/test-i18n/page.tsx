@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { locales } from '@/i18n';
 
 export default function TestI18nPage() {
@@ -10,9 +11,9 @@ export default function TestI18nPage() {
         <ul className="list-disc pl-5">
           {locales.map(locale => (
             <li key={locale}>
-              <a href={`/${locale}`} className="text-blue-600 hover:underline">
+              <Link href={`/${locale}`} className="text-blue-600 hover:underline">
                 {locale}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -21,10 +22,10 @@ export default function TestI18nPage() {
       <div className="mb-8">
         <h2 className="text-xl font-semibold mb-4">Test Links:</h2>
         <ul className="list-disc pl-5">
-          <li><a href="/en" className="text-blue-600 hover:underline">English (default)</a></li>
-          <li><a href="/es" className="text-blue-600 hover:underline">Spanish</a></li>
-          <li><a href="/fr" className="text-blue-600 hover:underline">French</a></li>
-          <li><a href="/de" className="text-blue-600 hover:underline">German</a></li>
+          <li><Link href="/en" className="text-blue-600 hover:underline">English (default)</Link></li>
+          <li><Link href="/es" className="text-blue-600 hover:underline">Spanish</Link></li>
+          <li><Link href="/fr" className="text-blue-600 hover:underline">French</Link></li>
+          <li><Link href="/de" className="text-blue-600 hover:underline">German</Link></li>
         </ul>
       </div>
     </div>

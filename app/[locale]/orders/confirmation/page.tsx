@@ -67,11 +67,11 @@ export default function OrderConfirmationPage() {
             <ol className="space-y-3 text-gray-600">
               <li className="flex">
                 <span className="font-bold mr-2">1.</span>
-                <span>We'll start preparing your order for production</span>
+                <span>We&apos;ll start preparing your order for production</span>
               </li>
               <li className="flex">
                 <span className="font-bold mr-2">2.</span>
-                <span>You'll receive an email when your order ships</span>
+                <span>You&apos;ll receive an email when your order ships</span>
               </li>
               <li className="flex">
                 <span className="font-bold mr-2">3.</span>

@@ -61,16 +61,16 @@ export default function AboutPage() {
               </p>
               
               <p>
-                We believe that clothes should be as unique and awesome as the kids who wear them. That's why 
+                We believe that clothes should be as unique and awesome as the kids who wear them. That&apos;s why 
                 every Xandcastle design is crafted with love, sprinkled with creativity, and made to make you 
                 smile. From castle-themed adventures to the coolest graphics this side of the playground, 
-                we're here to help you express your amazing self!
+                we&apos;re here to help you express your amazing self!
               </p>
               
               <p>
-                Whether you're exploring Windsor Castle, hanging with friends, or just being your awesome self, 
+                Whether you&apos;re exploring Windsor Castle, hanging with friends, or just being your awesome self, 
                 Xandcastle has got your back (literally!). Our special Windsor Collection celebrates the magic 
-                of one of the world's most famous castles with designs that are totally tourist-approved and 
+                of one of the world&apos;s most famous castles with designs that are totally tourist-approved and 
                 local-loved!
               </p>
             </div>
@@ -89,7 +89,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
               <p className="text-xl md:text-2xl text-gray-700 leading-relaxed">
                 To create the coolest, most creative clothing that lets every kid and teen 
-                shine bright like the stars they are! We're on a mission to banish boring 
+                shine bright like the stars they are! We&apos;re on a mission to banish boring 
                 from wardrobes everywhere and replace it with designs that spark joy, 
                 inspire confidence, and maybe even start a few conversations.
               </p>
@@ -116,7 +116,7 @@ export default function AboutPage() {
                     <span className="text-2xl">🎉</span>
                   </div>
                   <h3 className="font-semibold text-lg mb-2">Fun Always</h3>
-                  <p className="text-gray-600">Because life's too short for boring clothes</p>
+                  <p className="text-gray-600">Because life&apos;s too short for boring clothes</p>
                 </div>
               </div>
             </div>
@@ -159,7 +159,7 @@ export default function AboutPage() {
                 </h3>
                 <p className="text-gray-700">
                   Designed with kids and teens in mind! Comfortable fits, fun graphics, and 
-                  styles that you'll actually want to wear. Parents love them too!
+                  styles that you&apos;ll actually want to wear. Parents love them too!
                 </p>
               </div>
               
@@ -188,7 +188,7 @@ export default function AboutPage() {
             <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
               <p className="text-lg text-gray-700 mb-8">
                 Got questions? Want to share your awesome Xandcastle pics? Or just want to say hi? 
-                We'd love to hear from you!
+                We&apos;d love to hear from you!
               </p>
               
               <div className="space-y-4">
@@ -235,7 +235,7 @@ export default function AboutPage() {
             Ready to Join the Castle Crew?
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Discover amazing designs that'll make you smile!
+            Discover amazing designs that&apos;ll make you smile!
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link

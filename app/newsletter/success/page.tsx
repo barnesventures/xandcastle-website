@@ -32,11 +32,11 @@ export default function NewsletterSuccessPage() {
               Welcome to the Castle Crew!
             </h1>
             <p className="text-gray-600 mb-6">
-              You're all set! Check your email for your welcome gift and get ready for awesome updates.
+              You&apos;re all set! Check your email for your welcome gift and get ready for awesome updates.
             </p>
             <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-lg p-4 mb-6">
               <p className="text-purple-800 font-semibold">
-                🎁 Don't forget to use your welcome code:
+                🎁 Don&apos;t forget to use your welcome code:
               </p>
               <p className="text-2xl font-bold text-purple-900 mt-2">CASTLE10</p>
               <p className="text-sm text-purple-700 mt-1">10% off your first order!</p>
@@ -48,7 +48,7 @@ export default function NewsletterSuccessPage() {
               {message || 'Success!'}
             </h1>
             <p className="text-gray-600 mb-6">
-              You're already part of the Castle Crew! Keep an eye on your inbox for exciting updates.
+              You&apos;re already part of the Castle Crew! Keep an eye on your inbox for exciting updates.
             </p>
           </>
         )}

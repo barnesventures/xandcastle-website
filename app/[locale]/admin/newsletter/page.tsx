@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
@@ -42,15 +42,7 @@ export default function AdminNewsletterPage() {
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  useEffect(() => {
-    if (status === 'unauthenticated') {
-      router.push('/auth/signin');
-    } else if (status === 'authenticated') {
-      fetchSubscribers();
-    }
-  }, [status, currentPage, statusFilter]);
-
-  const fetchSubscribers = async () => {
+  const fetchSubscribers = useCallback(async () => {
     setIsLoading(true);
     setError(null);
 
@@ -83,7 +75,15 @@ export default function AdminNewsletterPage() {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [currentPage, statusFilter, router]);
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/signin');
+    } else if (status === 'authenticated') {
+      fetchSubscribers();
+    }
+  }, [status, fetchSubscribers, router]);
 
   const handleExport = async (format: 'csv' | 'json') => {
     try {

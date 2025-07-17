@@ -1,17 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { XMarkIcon, CodeBracketIcon, BeakerIcon } from '@heroicons/react/24/outline';
 
 export default function DevelopmentIndicator() {
   const [isVisible, setIsVisible] = useState(true);
   const [isMinimized, setIsMinimized] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
-
-  // Only show in development
-  if (process.env.NODE_ENV !== 'development') {
-    return null;
-  }
 
   useEffect(() => {
     // Check localStorage for visibility preference
@@ -36,6 +32,11 @@ export default function DevelopmentIndicator() {
     setIsMinimized(newMinimized);
     localStorage.setItem('dev-indicator-minimized', String(newMinimized));
   };
+
+  // Only show in development
+  if (process.env.NODE_ENV !== 'development') {
+    return null;
+  }
 
   if (!isVisible) {
     return null;
@@ -105,15 +106,15 @@ export default function DevelopmentIndicator() {
               </div>
               <div className="mt-2 space-y-1">
                 <div className="font-semibold">Useful Links:</div>
-                <a href="/api/printify/products" className="block underline hover:no-underline">
+                <Link href="/api/printify/products" className="block underline hover:no-underline">
                   API: Products
-                </a>
-                <a href="/admin" className="block underline hover:no-underline">
+                </Link>
+                <Link href="/admin" className="block underline hover:no-underline">
                   Admin Dashboard
-                </a>
-                <a href="/test-currency" className="block underline hover:no-underline">
+                </Link>
+                <Link href="/test-currency" className="block underline hover:no-underline">
                   Currency Test Page
-                </a>
+                </Link>
               </div>
             </div>
           )}

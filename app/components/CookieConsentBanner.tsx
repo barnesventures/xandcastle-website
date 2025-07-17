@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useCookieConsent } from '../contexts/CookieConsentContext';
 
 export function CookieConsentBanner() {
@@ -34,11 +35,11 @@ export function CookieConsentBanner() {
             </h3>
             <p className="text-sm text-gray-600">
               We use cookies to personalize content, analyze traffic, and improve your experience. 
-              By clicking "Accept All", you consent to our use of cookies.
+              By clicking &quot;Accept All&quot;, you consent to our use of cookies.
               {' '}
-              <a href="/cookies" className="text-xandcastle-purple hover:underline">
+              <Link href="/cookies" className="text-xandcastle-purple hover:underline">
                 Learn more
-              </a>
+              </Link>
             </p>
           </div>
           

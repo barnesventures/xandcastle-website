@@ -26,7 +26,7 @@ export default function ContactPage() {
           <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
             <p className="text-lg text-gray-700 mb-8">
               Got questions? Want to share your awesome Xandcastle pics? Or just want to say hi? 
-              We'd love to hear from you!
+              We&apos;d love to hear from you!
             </p>
             
             <div className="space-y-6">

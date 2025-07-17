@@ -43,7 +43,7 @@ export default function PrivacyPage() {
                   🔒 Your Privacy Matters
                 </p>
                 <p className="text-gray-700">
-                  We're committed to protecting your data and being transparent about how we use it.
+                  We&apos;re committed to protecting your data and being transparent about how we use it.
                 </p>
               </div>
               

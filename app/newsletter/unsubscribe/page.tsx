@@ -122,7 +122,7 @@ export default function NewsletterUnsubscribePage() {
           
           {unsubscribeStatus === 'success' && (
             <p className="mt-4 text-green-600 text-center">
-              You've been successfully unsubscribed!
+              You&apos;ve been successfully unsubscribed!
             </p>
           )}
           
@@ -184,7 +184,7 @@ export default function NewsletterUnsubscribePage() {
         
         {unsubscribeStatus === 'success' && (
           <p className="mt-4 text-green-600 text-center">
-            You've been successfully unsubscribed!
+            You&apos;ve been successfully unsubscribed!
           </p>
         )}
         

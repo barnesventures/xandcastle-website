@@ -30,7 +30,7 @@ export default function ShippingPage() {
                   🚀 Delivery Times
                 </h2>
                 <p className="text-gray-700 mb-4">
-                  All our products are made-to-order with love! Here's when you can expect your awesome gear:
+                  All our products are made-to-order with love! Here&apos;s when you can expect your awesome gear:
                 </p>
                 <ul className="space-y-2 text-gray-700">
                   <li className="flex items-start">
@@ -84,7 +84,7 @@ export default function ShippingPage() {
                   📍 Order Tracking
                 </h2>
                 <p className="text-gray-700">
-                  Once your order ships, you'll receive a confirmation email with tracking information. 
+                  Once your order ships, you&apos;ll receive a confirmation email with tracking information. 
                   You can also track your order anytime by logging into your account or using our 
                   order tracking page.
                 </p>

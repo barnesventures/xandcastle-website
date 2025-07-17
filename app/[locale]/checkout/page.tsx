@@ -68,7 +68,7 @@ export default function CheckoutPage() {
         }
       }
     }
-  }, [items, router]);
+  }, [items, router, subtotal, currentCurrency]);
 
   // Calculate totals
   const shipping = 500; // $5.00 in cents - this should come from Printify API
@@ -280,7 +280,7 @@ export default function CheckoutPage() {
                         Referral code applied: <code className="bg-green-100 px-2 py-1 rounded">{affiliateCode}</code>
                       </p>
                       <p className="text-xs text-green-600 mt-1">
-                        You're supporting an affiliate partner!
+                        You&apos;re supporting an affiliate partner!
                       </p>
                     </div>
                     <button

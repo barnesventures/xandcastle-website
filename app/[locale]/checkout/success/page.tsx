@@ -129,7 +129,7 @@ export default function CheckoutSuccessPage() {
             <ul className="space-y-2 text-sm text-gray-600">
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>You'll receive an order confirmation email shortly</span>
+                <span>You&apos;ll receive an order confirmation email shortly</span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
@@ -137,7 +137,7 @@ export default function CheckoutSuccessPage() {
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>
-                <span>You'll receive a shipping notification once your order is on its way</span>
+                <span>You&apos;ll receive a shipping notification once your order is on its way</span>
               </li>
               <li className="flex items-start">
                 <span className="mr-2">•</span>

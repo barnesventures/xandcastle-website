@@ -29,7 +29,7 @@ export default function AffiliateSuccessPage() {
         <h1 className="text-3xl font-bold mb-4">Application Submitted!</h1>
         
         <p className="text-lg text-gray-700 mb-6">
-          Thank you for applying to the Xandcastle Affiliate Program. We've received your application
+          Thank you for applying to the Xandcastle Affiliate Program. We&apos;ve received your application
           and will review it within 2-3 business days.
         </p>
         
@@ -37,8 +37,8 @@ export default function AffiliateSuccessPage() {
           <h2 className="text-xl font-semibold mb-3">What happens next?</h2>
           <ol className="space-y-2 text-gray-600">
             <li>1. Our team will review your application</li>
-            <li>2. You'll receive an email with our decision</li>
-            <li>3. If approved, you'll get your unique affiliate code and dashboard access</li>
+            <li>2. You&apos;ll receive an email with our decision</li>
+            <li>3. If approved, you&apos;ll get your unique affiliate code and dashboard access</li>
             <li>4. Start earning commission on successful referrals!</li>
           </ol>
         </div>

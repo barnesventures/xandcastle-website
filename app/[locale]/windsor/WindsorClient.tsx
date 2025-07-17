@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { ProductListItem } from '@/app/lib/printify-client';
 import ProductCard from '@/app/components/ProductCard';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
@@ -138,18 +139,18 @@ export function WindsorClient() {
             Each design captures the magic and majesty of this iconic British landmark.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a
+            <Link
               href="/shop"
               className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-xandcastle-purple bg-white hover:bg-gray-50 transition"
             >
               Browse All Products
-            </a>
-            <a
+            </Link>
+            <Link
               href="/about"
               className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-xandcastle-purple hover:bg-purple-700 transition"
             >
               Learn Our Story
-            </a>
+            </Link>
           </div>
         </div>
       </div>

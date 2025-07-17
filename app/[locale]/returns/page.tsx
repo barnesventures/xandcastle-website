@@ -25,8 +25,8 @@ export default function ReturnsPage() {
         <div className="max-w-4xl mx-auto">
           <div className="bg-white rounded-2xl shadow-xl p-8 md:p-12">
             <p className="text-lg text-gray-700 mb-8 text-center">
-              We want you to absolutely love your Xandcastle gear! If something's not quite right, 
-              we're here to help.
+              We want you to absolutely love your Xandcastle gear! If something&apos;s not quite right, 
+              we&apos;re here to help.
             </p>
             
             <div className="space-y-8">
@@ -58,7 +58,7 @@ export default function ReturnsPage() {
                   🎁 Exchanges
                 </h2>
                 <p className="text-gray-700 mb-4">
-                  Need a different size or color? No problem! We're happy to exchange items within 30 days.
+                  Need a different size or color? No problem! We&apos;re happy to exchange items within 30 days.
                 </p>
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 p-6 rounded-lg">
                   <p className="font-semibold mb-2">Quick Tip:</p>
@@ -81,7 +81,7 @@ export default function ReturnsPage() {
                     with your order number
                   </li>
                   <li>
-                    <strong>2.</strong> We'll send you a prepaid return label (UK only)
+                    <strong>2.</strong> We&apos;ll send you a prepaid return label (UK only)
                   </li>
                   <li>
                     <strong>3.</strong> Pack your items securely
@@ -126,7 +126,7 @@ export default function ReturnsPage() {
                 </p>
                 <p className="text-gray-700">
                   If you received a damaged or incorrect item, please contact us immediately with photos. 
-                  We'll make it right with a replacement or full refund - no return needed!
+                  We&apos;ll make it right with a replacement or full refund - no return needed!
                 </p>
               </div>
             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { formatCurrency } from '@/app/lib/utils';
 import LoadingSpinner from '@/app/components/LoadingSpinner';
 
@@ -41,11 +41,7 @@ export default function AffiliatesClient() {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  useEffect(() => {
-    fetchAffiliates();
-  }, [statusFilter, searchQuery, page]);
-
-  const fetchAffiliates = async () => {
+  const fetchAffiliates = useCallback(async () => {
     try {
       setLoading(true);
       const params = new URLSearchParams({
@@ -70,7 +66,11 @@ export default function AffiliatesClient() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [statusFilter, searchQuery, page]);
+
+  useEffect(() => {
+    fetchAffiliates();
+  }, [fetchAffiliates]);
 
   const handleAction = async (affiliateId: string, action: string, data?: any) => {
     try {

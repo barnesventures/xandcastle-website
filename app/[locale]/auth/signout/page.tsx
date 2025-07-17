@@ -30,7 +30,7 @@ export default function SignOutPage() {
             Sign out of your account?
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            You'll need to sign in again to access your account and order history.
+            You&apos;ll need to sign in again to access your account and order history.
           </p>
         </div>
         

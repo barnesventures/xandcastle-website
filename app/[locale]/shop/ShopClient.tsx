@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getProducts, formatPrice } from '@/app/lib/printify-client';
@@ -16,11 +16,7 @@ export function ShopClient() {
   const [error, setError] = useState<string | null>(null);
   const { currentCurrency } = useCurrency();
 
-  useEffect(() => {
-    loadProducts();
-  }, []);
-
-  const loadProducts = async () => {
+  const loadProducts = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getProducts();
@@ -45,7 +41,11 @@ export function ShopClient() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentCurrency]);
+
+  useEffect(() => {
+    loadProducts();
+  }, [loadProducts]);
 
   if (loading) {
     return (

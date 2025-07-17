@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { ProductDetails, getProductDetails } from '@/app/lib/printify-client';
 import { ProductDetailSkeleton } from '@/app/components/LoadingSkeleton';
@@ -19,11 +19,7 @@ export function ProductDetailClient() {
   const [stockStatus, setStockStatus] = useState<StockStatus | undefined>();
   const [inventoryInfo, setInventoryInfo] = useState<{ totalInStock: number; totalVariants: number } | null>(null);
 
-  useEffect(() => {
-    loadProduct();
-  }, [params.id]);
-
-  async function loadProduct() {
+  const loadProduct = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
@@ -43,7 +39,11 @@ export function ProductDetailClient() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [params.id]);
+
+  useEffect(() => {
+    loadProduct();
+  }, [loadProduct]);
 
   if (loading) {
     return <ProductDetailSkeleton />;

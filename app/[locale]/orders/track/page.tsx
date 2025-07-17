@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 import { ErrorMessage } from '@/app/components/ErrorMessage';
@@ -63,14 +63,7 @@ export default function OrderTrackingPage() {
   const [error, setError] = useState<string | null>(null);
   const [orderData, setOrderData] = useState<OrderData | null>(null);
 
-  // Auto-fetch if URL params are provided
-  useEffect(() => {
-    if (orderNumber && email) {
-      handleTrackOrder();
-    }
-  }, []);
-
-  const handleTrackOrder = async (e?: React.FormEvent) => {
+  const handleTrackOrder = useCallback(async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     
     if (!orderNumber || !email) {
@@ -99,7 +92,14 @@ export default function OrderTrackingPage() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [orderNumber, email]);
+
+  // Auto-fetch if URL params are provided
+  useEffect(() => {
+    if (orderNumber && email) {
+      handleTrackOrder();
+    }
+  }, [orderNumber, email, handleTrackOrder]);
 
   const formatPrice = (amount: number, currency: string) => {
     return new Intl.NumberFormat('en-US', {
