@@ -24,8 +24,9 @@ async function getProduct(id: string) {
   }
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }): Promise<Metadata> {
-  const product = await getProduct(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProduct(id);
   
   if (!product) {
     return {
@@ -60,13 +61,14 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
       images: product.images?.[0]?.src ? [product.images[0].src] : [],
     },
     alternates: {
-      canonical: `https://xandcastle.com/shop/${params.id}`,
+      canonical: `https://xandcastle.com/shop/${id}`,
     },
   };
 }
 
-export default async function ProductDetailPage({ params }: { params: { id: string } }) {
-  const product = await getProduct(params.id);
+export default async function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const product = await getProduct(id);
 
   if (!product) {
     notFound();
