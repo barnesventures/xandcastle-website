@@ -131,6 +131,27 @@ export async function GET(request: NextRequest) {
     const { getOrderStatus } = await import('@/app/lib/printify');
     const orderStatus = await getOrderStatus(orderId);
     
+    // Also update our database if we have this order
+    const { prisma } = await import('@/app/lib/prisma');
+    const order = await prisma.order.findFirst({
+      where: { printifyOrderId: orderId },
+    });
+
+    if (order) {
+      // Update with latest status from Printify
+      await prisma.order.update({
+        where: { id: order.id },
+        data: {
+          status: mapPrintifyStatusToOrderStatus(orderStatus.status),
+          fulfillmentStatus: orderStatus.fulfillment_status,
+          shipments: orderStatus.shipments || undefined,
+          trackingNumber: orderStatus.shipments?.[0]?.number || undefined,
+          trackingCarrier: orderStatus.shipments?.[0]?.carrier || undefined,
+          trackingUrl: orderStatus.shipments?.[0]?.url || undefined,
+        },
+      });
+    }
+    
     return NextResponse.json({
       success: true,
       data: orderStatus,
@@ -147,4 +168,20 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   }
+}
+
+/**
+ * Map Printify status to our OrderStatus enum
+ */
+function mapPrintifyStatusToOrderStatus(printifyStatus: string): string {
+  const statusMap: Record<string, string> = {
+    'pending': 'PENDING',
+    'processing': 'PROCESSING',
+    'fulfilled': 'FULFILLED',
+    'cancelled': 'CANCELLED',
+    'on-hold': 'PROCESSING',
+    'partially-fulfilled': 'PROCESSING',
+  };
+
+  return statusMap[printifyStatus.toLowerCase()] || 'PENDING';
 }

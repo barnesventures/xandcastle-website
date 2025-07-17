@@ -1,12 +1,13 @@
 'use client';
 
 import { useCart } from '@/app/contexts/CartContext';
+import { useCurrency } from '@/app/contexts/CurrencyContext';
 import Image from 'next/image';
 import Link from 'next/link';
-import { formatPrice } from '@/app/lib/printify-client';
 
 export default function CartPage() {
   const { items, itemCount, subtotal, removeItem, updateQuantity, clearCart } = useCart();
+  const { convertPrice, formatPrice } = useCurrency();
 
   if (itemCount === 0) {
     return (
@@ -53,7 +54,7 @@ export default function CartPage() {
                       {item.color && <span className="ml-2">Color: {item.color}</span>}
                       {item.size && <span className="ml-2">Size: {item.size}</span>}
                     </p>
-                    <p className="font-semibold mt-2">{formatPrice(item.price)}</p>
+                    <p className="font-semibold mt-2">{formatPrice(convertPrice(item.price))}</p>
                   </div>
                   
                   <div className="flex items-center gap-4">
@@ -111,7 +112,7 @@ export default function CartPage() {
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
                 <span>Subtotal ({itemCount} items)</span>
-                <span>{formatPrice(subtotal)}</span>
+                <span>{formatPrice(convertPrice(subtotal))}</span>
               </div>
               <div className="flex justify-between text-gray-600">
                 <span>Shipping</span>
@@ -126,7 +127,7 @@ export default function CartPage() {
             <div className="border-t pt-4 mb-6">
               <div className="flex justify-between font-semibold text-lg">
                 <span>Total</span>
-                <span>{formatPrice(subtotal)}</span>
+                <span>{formatPrice(convertPrice(subtotal))}</span>
               </div>
             </div>
             

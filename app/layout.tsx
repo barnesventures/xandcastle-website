@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import { CartProvider } from "./contexts/CartContext";
 import { CurrencyProvider } from "./contexts/CurrencyContext";
 import { MiniCart } from "./components/MiniCart";
+import { SessionProvider } from "./components/SessionProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,13 +23,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <CurrencyProvider>
-          <CartProvider>
-            <Header />
-            {children}
-            <MiniCart />
-          </CartProvider>
-        </CurrencyProvider>
+        <SessionProvider>
+          <CurrencyProvider>
+            <CartProvider>
+              <Header />
+              {children}
+              <MiniCart />
+            </CartProvider>
+          </CurrencyProvider>
+        </SessionProvider>
       </body>
     </html>
   );

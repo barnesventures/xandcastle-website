@@ -60,6 +60,15 @@ model Session {
   @@map("sessions")
 }
 
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
 // Order model for storing order information
 model Order {
   id                String      @id @default(cuid())
@@ -76,9 +85,15 @@ model Order {
   currency          String      @default("USD")
   shippingAddress   Json        // JSON object with shipping details
   billingAddress    Json?       // JSON object with billing details
-  items             Json        // JSON array of order items
+  items             Json        // JSON array of order items with product details
   trackingNumber    String?
   trackingCarrier   String?
+  trackingUrl       String?     // Direct tracking URL
+  customerName      String      // Full name for display
+  customerPhone     String?     // Phone number
+  fulfillmentStatus String      @default("pending") // Printify fulfillment status
+  shipments         Json?       // JSON array of shipment details from Printify
+  emailSent         Boolean     @default(false) // Track if confirmation email was sent
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
 
@@ -88,6 +103,7 @@ model Order {
   @@index([email])
   @@index([userId])
   @@index([printifyOrderId])
+  @@index([orderNumber, email]) // For guest order lookup
   @@map("orders")
 }
 

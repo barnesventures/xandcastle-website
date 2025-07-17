@@ -18,13 +18,13 @@ This task file is designed for ClaudeNightsWatch to guide the development of the
 
 ## 🎨 Sprint 2: UI & Cart Logic
 
-- [ ] Build responsive homepage and product grid
-- [ ] Product detail pages with variant selectors
-- [ ] Implement shopping cart (add, remove, update items)
-- [ ] Show converted prices using ExchangeRate API
-- [ ] Auto-detect user currency via geolocation or browser
-- [ ] Add Windsor Tourist sub-brand section with distinct layout
-- [ ] Integrate site-wide navigation and footer
+- [x] Build responsive homepage and product grid
+- [x] Product detail pages with variant selectors
+- [x] Implement shopping cart (add, remove, update items)
+- [x] Show converted prices using ExchangeRate API
+- [x] Auto-detect user currency via geolocation or browser
+- [x] Add Windsor Tourist sub-brand section with distinct layout
+- [x] Integrate site-wide navigation and footer
 
 ---
 
