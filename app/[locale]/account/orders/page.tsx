@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation'
 import { prisma } from '@/app/lib/prisma'
 import Link from 'next/link'
 import { ChevronLeftIcon, MagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import type { Order } from '@prisma/client'
 
 function getStatusColor(status: string) {
   switch (status) {
@@ -64,9 +65,9 @@ export default async function OrdersPage() {
         {orders.length > 0 ? (
           <div className="bg-white shadow overflow-hidden sm:rounded-md">
             <ul className="divide-y divide-gray-200">
-              {orders.map((order) => {
+              {orders.map((order: Order) => {
                 const items = order.items as any[]
-                const itemCount = items.reduce((acc, item) => acc + item.quantity, 0)
+                const itemCount = items.reduce((acc: number, item: any) => acc + item.quantity, 0)
                 const firstItem = items[0]
                 
                 return (
