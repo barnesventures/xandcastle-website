@@ -1,12 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/app/lib/prisma'
-import { withAdminAuth } from '@/app/lib/admin-auth'
+import { auth } from '@/auth'
+
+// Admin email addresses - in production, this should be stored in the database
+const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(',') || ['admin@xandcastle.com']
+
+async function isAdmin(email: string | null | undefined): Promise<boolean> {
+  if (!email) return false
+  return ADMIN_EMAILS.includes(email)
+}
 
 // GET /api/admin/blog/[id] - Get a single blog post
-export const GET = withAdminAuth(async (
+export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) => {
+) {
+  const session = await auth()
+  if (!session?.user?.email || !await isAdmin(session.user.email)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { id } = await params
   try {
     const post = await prisma.blogPost.findUnique({
@@ -28,13 +41,18 @@ export const GET = withAdminAuth(async (
       { status: 500 }
     )
   }
-})
+}
 
 // PUT /api/admin/blog/[id] - Update a blog post
-export const PUT = withAdminAuth(async (
+export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) => {
+) {
+  const session = await auth()
+  if (!session?.user?.email || !await isAdmin(session.user.email)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { id } = await params
   try {
     const body = await request.json()
@@ -121,13 +139,18 @@ export const PUT = withAdminAuth(async (
       { status: 500 }
     )
   }
-})
+}
 
 // DELETE /api/admin/blog/[id] - Delete a blog post
-export const DELETE = withAdminAuth(async (
+export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
-) => {
+) {
+  const session = await auth()
+  if (!session?.user?.email || !await isAdmin(session.user.email)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
   const { id } = await params
   try {
     await prisma.blogPost.delete({
@@ -142,4 +165,4 @@ export const DELETE = withAdminAuth(async (
       { status: 500 }
     )
   }
-})
+}

@@ -1,9 +1,21 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/app/lib/prisma'
-import { withAdminAuth } from '@/app/lib/admin-auth'
+import { auth } from '@/auth'
+
+// Admin email addresses - in production, this should be stored in the database
+const ADMIN_EMAILS = process.env.ADMIN_EMAILS?.split(',') || ['admin@xandcastle.com']
+
+async function isAdmin(email: string | null | undefined): Promise<boolean> {
+  if (!email) return false
+  return ADMIN_EMAILS.includes(email)
+}
 
 // GET /api/admin/blog - Get all blog posts (including drafts)
-export const GET = withAdminAuth(async (request: NextRequest) => {
+export async function GET(request: NextRequest) {
+  const session = await auth()
+  if (!session?.user?.email || !await isAdmin(session.user.email)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const { searchParams } = new URL(request.url)
     const limit = parseInt(searchParams.get('limit') || '20')
@@ -42,10 +54,14 @@ export const GET = withAdminAuth(async (request: NextRequest) => {
       { status: 500 }
     )
   }
-})
+}
 
 // POST /api/admin/blog - Create a new blog post
-export const POST = withAdminAuth(async (request: NextRequest) => {
+export async function POST(request: NextRequest) {
+  const session = await auth()
+  if (!session?.user?.email || !await isAdmin(session.user.email)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const body = await request.json()
     const {
@@ -105,4 +121,4 @@ export const POST = withAdminAuth(async (request: NextRequest) => {
       { status: 500 }
     )
   }
-})
+}
